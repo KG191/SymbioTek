@@ -187,10 +187,14 @@ h3{margin:0 0 6px}
   gap:14px;
   margin-top:18px;
 }
+.contact--4col{
+  grid-template-columns: repeat(4, 1fr);
+}
 .fineprint{margin-top:16px; color: rgba(184,196,230,.8); font-size:14px}
 
 @media (max-width: 1024px){
   .grid4{grid-template-columns: repeat(2, 1fr)}
+  .contact--4col{grid-template-columns: repeat(2, 1fr)}
 }
 
 @media (max-width: 920px){
