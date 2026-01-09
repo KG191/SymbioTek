@@ -200,6 +200,14 @@ h3{margin:0 0 6px}
   object-fit: cover;
   flex-shrink: 0;
 }
+.app-store-badge{
+  height:40px;
+  width:auto;
+  transition: transform 0.2s ease;
+}
+.app-store-badge:hover{
+  transform: scale(1.05);
+}
 .link{color: var(--accent); transition: text-decoration 0.2s ease}
 .link:hover{text-decoration:underline}
 
