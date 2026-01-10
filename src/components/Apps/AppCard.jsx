@@ -1,13 +1,9 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Menu } from 'bloom-menu'
 import { cardHover } from '../../utils/animations'
 
 export default function AppCard({ app }) {
-  const handleLearnMore = () => {
-    // Could navigate to a dedicated page or show a modal
-    console.log('Learn more about', app.name)
-  }
-
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -16,7 +12,6 @@ export default function AppCard({ app }) {
         url: app.appStoreUrl
       }).catch(err => console.log('Share failed:', err))
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(app.appStoreUrl)
       alert('App Store link copied to clipboard!')
     }
@@ -50,6 +45,28 @@ export default function AppCard({ app }) {
 
       <p className="text">{app.description}</p>
 
+      {/* More details button - bottom left */}
+      {app.fullDescription && (
+        <Link to={`/app/${app.id}`} className="app__details-btn">
+          More details
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.5 2.5L8 6L4.5 9.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Link>
+      )}
+
       {/* bloom-menu for quick actions */}
       <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
         <Menu.Root direction="bottom" anchor="end">
@@ -75,13 +92,10 @@ export default function AppCard({ app }) {
                 }}
                 aria-label="More options"
               >
-                ⋯
+                &#x22EF;
               </button>
             </Menu.Trigger>
             <Menu.Content className="bloom-menu-content">
-              <Menu.Item onSelect={handleLearnMore}>
-                Learn More
-              </Menu.Item>
               <Menu.Item onSelect={() => window.open(app.appStoreUrl, '_blank')}>
                 Visit App Store
               </Menu.Item>
