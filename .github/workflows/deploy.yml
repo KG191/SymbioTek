@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ framer-motion ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
