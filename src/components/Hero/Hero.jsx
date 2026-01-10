@@ -1,15 +1,7 @@
 import { motion } from 'framer-motion'
-import Button from '../common/Button'
 import { fadeInUp, scaleIn, staggerContainer } from '../../utils/animations'
 
 export default function Hero() {
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    })
-  }
-
   return (
     <section className="hero">
       <div className="container hero__inner">
@@ -28,15 +20,6 @@ export default function Hero() {
             Technology should be symbiotic &mdash; with infrastructure, with people, and with the future.
             SymbioTeK creates thoughtful digital experiences designed to improve lives.
           </motion.p>
-
-          <motion.div className="cta" variants={fadeInUp}>
-            <Button variant="primary" onClick={() => scrollToSection('apps')}>
-              Explore the apps
-            </Button>
-            <Button variant="ghost" onClick={() => scrollToSection('contact')}>
-              Get in touch
-            </Button>
-          </motion.div>
         </motion.div>
 
         {/* Hero Card */}
