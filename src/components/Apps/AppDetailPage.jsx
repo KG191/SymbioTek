@@ -40,6 +40,16 @@ const foravaOtherScreenshots = [
   { src: '/assets/forava-screenshots/Settings.png', alt: 'Settings' },
 ]
 
+// Screenshots for Wendy app
+const wendyScreenshots = [
+  { src: '/assets/wendy-screenshots/Landing page.png', alt: 'Landing Page' },
+  { src: '/assets/wendy-screenshots/Welcome page.png', alt: 'Welcome' },
+  { src: '/assets/wendy-screenshots/Conversation promotion.png', alt: 'Conversation' },
+  { src: '/assets/wendy-screenshots/About Wendy.png', alt: 'About Wendy' },
+  { src: '/assets/wendy-screenshots/Settings top dark mode.png', alt: 'Settings' },
+  { src: '/assets/wendy-screenshots/Setting bottom dark mode.png', alt: 'Settings (continued)' },
+]
+
 // Get Forava screenshots ordered by closest upcoming festival
 function getForavaScreenshotsOrdered() {
   const now = new Date()
@@ -76,6 +86,8 @@ function getScreenshotsForApp(appId) {
       return kidzScreenshots
     case 'forava':
       return getForavaScreenshotsOrdered()
+    case 'wendy':
+      return wendyScreenshots
     default:
       return null
   }
