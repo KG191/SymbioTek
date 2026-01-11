@@ -54,11 +54,11 @@ const wendyScreenshots = [
 const optisenseScreenshots = [
   { src: '/assets/optisense-screenshots/Landing page.PNG', alt: 'Landing Page' },
   { src: '/assets/optisense-screenshots/Welcome page.PNG', alt: 'Welcome' },
+  { src: '/assets/optisense-screenshots/AI Coach.PNG', alt: 'AI Coach' },
+  { src: '/assets/optisense-screenshots/AI Expert.PNG', alt: 'AI Expert' },
   { src: '/assets/optisense-screenshots/Forecast.PNG', alt: 'Forecast' },
   { src: '/assets/optisense-screenshots/Overall Body.PNG', alt: 'Overall Body' },
   { src: '/assets/optisense-screenshots/Nutrition Insights.PNG', alt: 'Nutrition Insights' },
-  { src: '/assets/optisense-screenshots/AI Coach.PNG', alt: 'AI Coach' },
-  { src: '/assets/optisense-screenshots/AI Expert.PNG', alt: 'AI Expert' },
   { src: '/assets/optisense-screenshots/Call-2-action.PNG', alt: 'Call to Action' },
   { src: '/assets/optisense-screenshots/Call-2-action_sleep.PNG', alt: 'Sleep Call to Action' },
   { src: '/assets/optisense-screenshots/Social 1.PNG', alt: 'Social' },
