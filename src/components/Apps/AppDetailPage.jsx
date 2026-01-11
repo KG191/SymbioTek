@@ -50,6 +50,22 @@ const wendyScreenshots = [
   { src: '/assets/wendy-screenshots/Setting bottom dark mode.png', alt: 'Settings (continued)' },
 ]
 
+// Screenshots for OptiSense app
+const optisenseScreenshots = [
+  { src: '/assets/optisense-screenshots/Landing page.PNG', alt: 'Landing Page' },
+  { src: '/assets/optisense-screenshots/Welcome page.PNG', alt: 'Welcome' },
+  { src: '/assets/optisense-screenshots/Forecast.PNG', alt: 'Forecast' },
+  { src: '/assets/optisense-screenshots/Overall Body.PNG', alt: 'Overall Body' },
+  { src: '/assets/optisense-screenshots/Nutrition Insights.PNG', alt: 'Nutrition Insights' },
+  { src: '/assets/optisense-screenshots/AI Coach.PNG', alt: 'AI Coach' },
+  { src: '/assets/optisense-screenshots/AI Expert.PNG', alt: 'AI Expert' },
+  { src: '/assets/optisense-screenshots/Call-2-action.PNG', alt: 'Call to Action' },
+  { src: '/assets/optisense-screenshots/Call-2-action_sleep.PNG', alt: 'Sleep Call to Action' },
+  { src: '/assets/optisense-screenshots/Social 1.PNG', alt: 'Social' },
+  { src: '/assets/optisense-screenshots/Social 2.PNG', alt: 'Social (continued)' },
+  { src: '/assets/optisense-screenshots/Settings.PNG', alt: 'Settings' },
+]
+
 // Get Forava screenshots ordered by closest upcoming festival
 function getForavaScreenshotsOrdered() {
   const now = new Date()
@@ -88,6 +104,8 @@ function getScreenshotsForApp(appId) {
       return getForavaScreenshotsOrdered()
     case 'wendy':
       return wendyScreenshots
+    case 'optisense':
+      return optisenseScreenshots
     default:
       return null
   }
