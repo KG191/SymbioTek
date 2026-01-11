@@ -52,8 +52,8 @@ const wendyScreenshots = [
 
 // Screenshots for OptiSense app
 const optisenseScreenshots = [
-  { src: '/assets/optisense-screenshots/Landing page.PNG', alt: 'Landing Page' },
   { src: '/assets/optisense-screenshots/Welcome page.PNG', alt: 'Welcome' },
+  { src: '/assets/optisense-screenshots/Landing page.PNG', alt: 'Landing Page' },
   { src: '/assets/optisense-screenshots/AI Coach.PNG', alt: 'AI Coach' },
   { src: '/assets/optisense-screenshots/AI Expert.PNG', alt: 'AI Expert' },
   { src: '/assets/optisense-screenshots/Forecast.PNG', alt: 'Forecast' },
