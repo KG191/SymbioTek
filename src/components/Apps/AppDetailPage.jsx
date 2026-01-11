@@ -1,7 +1,51 @@
 import { useParams, Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useRef, memo } from 'react'
 import { motion } from 'framer-motion'
+import { StackedCarousel, ResponsiveContainer } from 'react-stacked-center-carousel'
 import { apps } from './Apps'
+
+// Screenshots for Kidz app
+const kidzScreenshots = [
+  { src: '/assets/kidz-screenshots/Landing Page iPhone.png', alt: 'Landing Page' },
+  { src: '/assets/kidz-screenshots/Story Display English US iPhone.png', alt: 'Story in English' },
+  { src: '/assets/kidz-screenshots/Story Display French iPhone.png', alt: 'Story in French' },
+  { src: '/assets/kidz-screenshots/Story Display German iPhone.png', alt: 'Story in German' },
+  { src: '/assets/kidz-screenshots/Story Display Hindi iPhone.png', alt: 'Story in Hindi' },
+  { src: '/assets/kidz-screenshots/Library View iPhone.png', alt: 'Story Library' },
+  { src: '/assets/kidz-screenshots/Settings View_iPhone_top.png', alt: 'Settings' },
+  { src: '/assets/kidz-screenshots/Settings Language Selection_iPhone_top.png', alt: 'Language Selection' },
+]
+
+// Screenshot slide component for carousel
+const ScreenshotSlide = memo(function ScreenshotSlide(props) {
+  const { data, dataIndex } = props
+  return (
+    <div
+      className="screenshot-slide"
+      draggable={false}
+      style={{
+        width: '100%',
+        height: 500,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <img
+        src={data[dataIndex].src}
+        alt={data[dataIndex].alt}
+        draggable={false}
+        style={{
+          maxHeight: '100%',
+          maxWidth: '100%',
+          objectFit: 'contain',
+          borderRadius: 24,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
+        }}
+      />
+    </div>
+  )
+})
 
 // Parse fullDescription into sections based on UPPERCASE HEADERS
 function parseDescriptionSections(fullDescription) {
@@ -76,11 +120,23 @@ function formatContent(content) {
 export default function AppDetailPage() {
   const { appId } = useParams()
   const app = apps.find(a => a.id === appId)
+  const carouselRef = useRef()
 
   // Scroll to top when page loads
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [appId])
+
+  // Ensure carousel starts at first slide (Landing Page) on mount
+  useEffect(() => {
+    if (app?.id === 'kidz' && carouselRef.current) {
+      // Small delay to ensure carousel is fully initialized
+      const timer = setTimeout(() => {
+        carouselRef.current?.swipeTo(0)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [app?.id])
 
   if (!app) {
     return (
@@ -163,6 +219,50 @@ export default function AppDetailPage() {
       {/* Spacer for fixed hero */}
       <div className="detail-page__hero-spacer" />
 
+      {/* Screenshots Carousel - Only for Kidz app */}
+      {app.id === 'kidz' && (
+        <div className="container">
+          <motion.div
+            className="detail-page__screenshots"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <h2 className="detail-page__screenshots-title">Screenshots</h2>
+            <div className="carousel-wrapper">
+              <ResponsiveContainer
+                carouselRef={carouselRef}
+                render={(parentWidth) => (
+                  <StackedCarousel
+                    ref={carouselRef}
+                    data={kidzScreenshots}
+                    carouselWidth={parentWidth}
+                    slideWidth={280}
+                    slideComponent={ScreenshotSlide}
+                    maxVisibleSlide={5}
+                    currentVisibleSlide={5}
+                    useGrabCursor={true}
+                    height={500}
+                  />
+                )}
+              />
+            </div>
+            <div className="carousel-nav">
+              <button onClick={() => carouselRef.current?.goBack()}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12 15L7 10L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button onClick={() => carouselRef.current?.goNext()}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       {/* Section Cards */}
       <div className="container">
         <div className="detail-page__sections">
@@ -183,19 +283,6 @@ export default function AppDetailPage() {
             </motion.div>
           ))}
         </div>
-
-        {/* Screenshots Placeholder */}
-        <motion.div
-          className="detail-page__screenshots"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-        >
-          <h2 className="detail-page__screenshots-title">Screenshots</h2>
-          <div className="detail-page__screenshots-placeholder">
-            <p>Coming soon</p>
-          </div>
-        </motion.div>
 
         {/* Bottom CTA */}
         <motion.div
