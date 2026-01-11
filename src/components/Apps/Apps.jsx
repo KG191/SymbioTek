@@ -156,7 +156,7 @@ Perfect for families maintaining traditions!`,
   {
     id: 'kidz',
     name: 'Kidz Magical Story Teller',
-    tagline: 'In our increasingly connected yet digital world, Kidz Magical Story Teller bridges cultures, preserves languages, and nurtures the timeless art of creative storytelling.',
+    tagline: 'Bridges cultures, preserves languages, & nurtures the timeless art of creative storytelling.',
     description: 'Transform voice recordings into illustrated stories with AI. Supports 40+ languages and multiple animation styles including Disney/Pixar, Anime, and Bollywood aesthetics. Privacy-focused with no ads and no data collection.',
     fullDescription: `Transform your child's imagination into magical visual stories with AI!
 
