@@ -16,6 +16,37 @@ const kidzScreenshots = [
   { src: '/assets/kidz-screenshots/Settings Language Selection_iPhone_top.png', alt: 'Language Selection' },
 ]
 
+// Screenshots for Forava app
+const foravaScreenshots = [
+  { src: '/assets/forava-screenshots/Culture selection.png', alt: 'Culture Selection' },
+  { src: '/assets/forava-screenshots/Christmas Icon Carousel.png', alt: 'Christmas' },
+  { src: '/assets/forava-screenshots/Diwali Icon Carousel.png', alt: 'Diwali' },
+  { src: '/assets/forava-screenshots/Chinese New Year Icon Carousel.png', alt: 'Chinese New Year' },
+  { src: '/assets/forava-screenshots/Easter Icon Carousel.png', alt: 'Easter' },
+  { src: '/assets/forava-screenshots/Holi Icon Carousel.png', alt: 'Holi' },
+  { src: '/assets/forava-screenshots/Hannukhah icon carousel.png', alt: 'Hanukkah' },
+  { src: '/assets/forava-screenshots/Eid Al Adha Simulator Screenshot - iPhone 6.5" Display_AppStore Connect - 2025-12-07 at 15.57.27.png', alt: 'Eid Al Adha' },
+  { src: '/assets/forava-screenshots/Rosh Hashanah Icon Carousel.png', alt: 'Rosh Hashanah' },
+  { src: '/assets/forava-screenshots/Mid Autumn Festival Icon Carousel.png', alt: 'Mid Autumn Festival' },
+  { src: '/assets/forava-screenshots/Vesak Day Icon Carousel.png', alt: 'Vesak Day' },
+  { src: '/assets/forava-screenshots/Raksha Bandan icon carousel.png', alt: 'Raksha Bandhan' },
+  { src: '/assets/forava-screenshots/Anniversary Simulator Screenshot - iPhone 6.5" Display_AppStore Connect - 2025-12-07 at 15.57.20.png', alt: 'Anniversary' },
+  { src: '/assets/forava-screenshots/Beauty & cosmetics gift voucher.png', alt: 'Gift Voucher' },
+  { src: '/assets/forava-screenshots/Settings.png', alt: 'Settings' },
+]
+
+// Helper function to get screenshots for an app
+function getScreenshotsForApp(appId) {
+  switch (appId) {
+    case 'kidz':
+      return kidzScreenshots
+    case 'forava':
+      return foravaScreenshots
+    default:
+      return null
+  }
+}
+
 // Screenshot slide component for carousel
 const ScreenshotSlide = memo(function ScreenshotSlide(props) {
   const { data, dataIndex } = props
@@ -127,9 +158,9 @@ export default function AppDetailPage() {
     window.scrollTo(0, 0)
   }, [appId])
 
-  // Ensure carousel starts at first slide (Landing Page) on mount
+  // Ensure carousel starts at first slide on mount
   useEffect(() => {
-    if (app?.id === 'kidz' && carouselRef.current) {
+    if (getScreenshotsForApp(app?.id) && carouselRef.current) {
       // Small delay to ensure carousel is fully initialized
       const timer = setTimeout(() => {
         carouselRef.current?.swipeTo(0)
@@ -219,8 +250,8 @@ export default function AppDetailPage() {
       {/* Spacer for fixed hero */}
       <div className="detail-page__hero-spacer" />
 
-      {/* Screenshots Carousel - Only for Kidz app */}
-      {app.id === 'kidz' && (
+      {/* Screenshots Carousel */}
+      {getScreenshotsForApp(app.id) && (
         <div className="container">
           <motion.div
             className="detail-page__screenshots"
@@ -235,7 +266,7 @@ export default function AppDetailPage() {
                 render={(parentWidth) => (
                   <StackedCarousel
                     ref={carouselRef}
-                    data={kidzScreenshots}
+                    data={getScreenshotsForApp(app.id)}
                     carouselWidth={parentWidth}
                     slideWidth={280}
                     slideComponent={ScreenshotSlide}
