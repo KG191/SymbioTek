@@ -16,24 +16,58 @@ const kidzScreenshots = [
   { src: '/assets/kidz-screenshots/Settings Language Selection_iPhone_top.png', alt: 'Language Selection' },
 ]
 
-// Screenshots for Forava app
-const foravaScreenshots = [
+// Screenshots for Forava app with festival dates (month, day)
+// Dates are approximate and may vary by year for lunar calendar festivals
+const foravaFestivalScreenshots = [
+  { src: '/assets/forava-screenshots/Chinese New Year Icon Carousel.png', alt: 'Chinese New Year', month: 1, day: 29 },
+  { src: '/assets/forava-screenshots/Holi Icon Carousel.png', alt: 'Holi', month: 3, day: 14 },
+  { src: '/assets/forava-screenshots/Easter Icon Carousel.png', alt: 'Easter', month: 4, day: 20 },
+  { src: '/assets/forava-screenshots/Vesak Day Icon Carousel.png', alt: 'Vesak Day', month: 5, day: 12 },
+  { src: '/assets/forava-screenshots/Eid Al Adha Simulator Screenshot - iPhone 6.5" Display_AppStore Connect - 2025-12-07 at 15.57.27.png', alt: 'Eid Al Adha', month: 6, day: 7 },
+  { src: '/assets/forava-screenshots/Raksha Bandan icon carousel.png', alt: 'Raksha Bandhan', month: 8, day: 9 },
+  { src: '/assets/forava-screenshots/Mid Autumn Festival Icon Carousel.png', alt: 'Mid Autumn Festival', month: 9, day: 17 },
+  { src: '/assets/forava-screenshots/Rosh Hashanah Icon Carousel.png', alt: 'Rosh Hashanah', month: 9, day: 23 },
+  { src: '/assets/forava-screenshots/Diwali Icon Carousel.png', alt: 'Diwali', month: 10, day: 20 },
+  { src: '/assets/forava-screenshots/Hannukhah icon carousel.png', alt: 'Hanukkah', month: 12, day: 14 },
+  { src: '/assets/forava-screenshots/Christmas Icon Carousel.png', alt: 'Christmas', month: 12, day: 25 },
+]
+
+// Non-festival Forava screenshots (shown after festivals)
+const foravaOtherScreenshots = [
   { src: '/assets/forava-screenshots/Culture selection.png', alt: 'Culture Selection' },
-  { src: '/assets/forava-screenshots/Christmas Icon Carousel.png', alt: 'Christmas' },
-  { src: '/assets/forava-screenshots/Diwali Icon Carousel.png', alt: 'Diwali' },
-  { src: '/assets/forava-screenshots/Chinese New Year Icon Carousel.png', alt: 'Chinese New Year' },
-  { src: '/assets/forava-screenshots/Easter Icon Carousel.png', alt: 'Easter' },
-  { src: '/assets/forava-screenshots/Holi Icon Carousel.png', alt: 'Holi' },
-  { src: '/assets/forava-screenshots/Hannukhah icon carousel.png', alt: 'Hanukkah' },
-  { src: '/assets/forava-screenshots/Eid Al Adha Simulator Screenshot - iPhone 6.5" Display_AppStore Connect - 2025-12-07 at 15.57.27.png', alt: 'Eid Al Adha' },
-  { src: '/assets/forava-screenshots/Rosh Hashanah Icon Carousel.png', alt: 'Rosh Hashanah' },
-  { src: '/assets/forava-screenshots/Mid Autumn Festival Icon Carousel.png', alt: 'Mid Autumn Festival' },
-  { src: '/assets/forava-screenshots/Vesak Day Icon Carousel.png', alt: 'Vesak Day' },
-  { src: '/assets/forava-screenshots/Raksha Bandan icon carousel.png', alt: 'Raksha Bandhan' },
   { src: '/assets/forava-screenshots/Anniversary Simulator Screenshot - iPhone 6.5" Display_AppStore Connect - 2025-12-07 at 15.57.20.png', alt: 'Anniversary' },
   { src: '/assets/forava-screenshots/Beauty & cosmetics gift voucher.png', alt: 'Gift Voucher' },
   { src: '/assets/forava-screenshots/Settings.png', alt: 'Settings' },
 ]
+
+// Get Forava screenshots ordered by closest upcoming festival
+function getForavaScreenshotsOrdered() {
+  const now = new Date()
+  const currentMonth = now.getMonth() + 1 // 1-12
+  const currentDay = now.getDate()
+
+  // Calculate days until each festival (considering year wrap)
+  const festivalsWithDays = foravaFestivalScreenshots.map(festival => {
+    let daysUntil
+    const festivalDayOfYear = (festival.month - 1) * 30.44 + festival.day // Approximate
+    const currentDayOfYear = (currentMonth - 1) * 30.44 + currentDay
+
+    if (festivalDayOfYear >= currentDayOfYear) {
+      daysUntil = festivalDayOfYear - currentDayOfYear
+    } else {
+      // Festival has passed this year, calculate days until next year
+      daysUntil = (365 - currentDayOfYear) + festivalDayOfYear
+    }
+
+    return { ...festival, daysUntil }
+  })
+
+  // Sort by days until festival (closest first)
+  const sortedFestivals = [...festivalsWithDays].sort((a, b) => a.daysUntil - b.daysUntil)
+
+  // Return sorted festivals followed by other screenshots
+  return [...sortedFestivals, ...foravaOtherScreenshots]
+}
 
 // Helper function to get screenshots for an app
 function getScreenshotsForApp(appId) {
@@ -41,7 +75,7 @@ function getScreenshotsForApp(appId) {
     case 'kidz':
       return kidzScreenshots
     case 'forava':
-      return foravaScreenshots
+      return getForavaScreenshotsOrdered()
     default:
       return null
   }
