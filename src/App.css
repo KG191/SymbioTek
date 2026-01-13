@@ -208,6 +208,87 @@ h3{margin:0 0 6px}
 .app-store-badge:hover{
   transform: scale(1.05);
 }
+
+/* Podcast styles */
+.podcasts{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:14px;
+  margin-top:18px;
+}
+.podcast {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.podcast__top{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:14px;
+  margin-bottom: 12px;
+}
+.podcast__icon{
+  width:64px;
+  height:64px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.podcast .text {
+  margin-bottom: 16px;
+}
+.podcast__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.spotify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(30, 215, 96, 0.35);
+  background: rgba(30, 215, 96, 0.12);
+  color: #1ed760;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.spotify-btn:hover {
+  background: rgba(30, 215, 96, 0.2);
+  border-color: rgba(30, 215, 96, 0.5);
+}
+.spotify-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.apple-podcasts-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(148, 87, 235, 0.35);
+  background: rgba(148, 87, 235, 0.12);
+  color: #9457eb;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.apple-podcasts-btn:hover {
+  background: rgba(148, 87, 235, 0.2);
+  border-color: rgba(148, 87, 235, 0.5);
+}
+.apple-podcasts-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
 .link{color: var(--accent); transition: text-decoration 0.2s ease}
 .link:hover{text-decoration:underline}
 
@@ -230,6 +311,7 @@ h3{margin:0 0 6px}
 @media (max-width: 920px){
   .hero__inner{grid-template-columns: 1fr}
   .apps{grid-template-columns: 1fr}
+  .podcasts{grid-template-columns: 1fr}
   .grid3{grid-template-columns: 1fr}
   .grid4{grid-template-columns: 1fr}
   .contact{grid-template-columns: 1fr}

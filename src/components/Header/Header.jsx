@@ -31,6 +31,9 @@ export default function Header() {
           <a href="#apps" onClick={(e) => { e.preventDefault(); scrollToSection('apps'); }}>
             Apps
           </a>
+          <a href="#podcasts" onClick={(e) => { e.preventDefault(); scrollToSection('podcasts'); }}>
+            Podcasts
+          </a>
           <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
             Contact
           </a>
