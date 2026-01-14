@@ -391,23 +391,13 @@ h3{margin:0 0 6px}
   min-height: 100vh;
 }
 
-/* Hero Banner - Fixed at top */
+/* Hero Banner */
 .detail-page__hero {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
   padding: 24px 0 24px;
   background: rgba(7, 10, 16, 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
-}
-
-/* Spacer to push content below fixed hero */
-.detail-page__hero-spacer {
-  height: 300px;
 }
 
 .detail-page__hero-glow {
@@ -664,10 +654,6 @@ h3{margin:0 0 6px}
 }
 
 @media (max-width: 600px) {
-  .detail-page__hero-spacer {
-    height: 360px;
-  }
-
   .detail-page__app-info {
     flex-direction: column;
     align-items: flex-start;

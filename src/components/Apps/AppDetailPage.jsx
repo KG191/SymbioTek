@@ -311,9 +311,6 @@ export default function AppDetailPage() {
         </div>
       </div>
 
-      {/* Spacer for fixed hero */}
-      <div className="detail-page__hero-spacer" />
-
       {/* Screenshots Carousel */}
       {getScreenshotsForApp(app.id) && (
         <div className="container">
