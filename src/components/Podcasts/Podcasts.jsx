@@ -19,6 +19,15 @@ export const podcasts = [
     icon: '/assets/tegt-icon.png',
     spotifyUrl: 'https://open.spotify.com/show/3dOumLio2aUZf8igsgVfgs',
     applePodcastsUrl: 'https://podcasts.apple.com/au/podcast/think-expand-grow-thrive/id1774571117'
+  },
+  {
+    id: 'the-calm-edge',
+    name: 'The Calm Edge',
+    tagline: 'Performance under pressure',
+    description: 'Explores the psychological patterns behind workplace challenges — from being overlooked despite competence to decision-making under pressure. Each episode offers a strategic reframe and one deliberate calm move to apply.',
+    icon: '/assets/the-calm-edge-icon.png',
+    spotifyUrl: 'https://open.spotify.com/show/64OEEVEIJ92AieHmcyv2ZI',
+    applePodcastsUrl: 'https://podcasts.apple.com/au/podcast/the-calm-edge/id1877471913'
   }
 ]
 
