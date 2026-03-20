@@ -287,7 +287,7 @@ export default function AppDetailPage() {
               className="detail-page__icon"
             />
             <div>
-              <h1 className="detail-page__title">{app.name}</h1>
+              <h1 className="detail-page__title">{app.name}{app.badge && <span className="app__badge">{app.badge}</span>}</h1>
               <p className="detail-page__tagline">{app.tagline}</p>
             </div>
           </motion.div>

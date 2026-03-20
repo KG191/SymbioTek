@@ -551,6 +551,21 @@ h3{margin:0 0 6px}
   text-align: center;
 }
 
+/* App Badge (e.g. Patent Pending) */
+.app__badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #f5c542;
+  border: 1px solid rgba(245, 197, 66, 0.35);
+  background: rgba(245, 197, 66, 0.1);
+  border-radius: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.3px;
+}
+
 /* Video Player (Work Apps detail page) */
 .detail-page__video {
   text-align: center;

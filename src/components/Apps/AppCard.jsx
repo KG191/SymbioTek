@@ -29,7 +29,7 @@ export default function AppCard({ app }) {
           className="app__icon"
         />
         <div>
-          <h3>{app.name}</h3>
+          <h3>{app.name}{app.badge && <span className="app__badge">{app.badge}</span>}</h3>
           <p className="muted">{app.tagline}</p>
         </div>
 
