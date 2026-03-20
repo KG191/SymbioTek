@@ -34,13 +34,15 @@ export default function AppCard({ app }) {
         </div>
 
         {/* App Store Badge */}
-        <a href={app.appStoreUrl} target="_blank" rel="noreferrer">
-          <img
-            src="/assets/app-store-badge.svg"
-            alt="Download on the App Store"
-            className="app-store-badge"
-          />
-        </a>
+        {app.appStoreUrl && (
+          <a href={app.appStoreUrl} target="_blank" rel="noreferrer">
+            <img
+              src="/assets/app-store-badge.svg"
+              alt="Download on the App Store"
+              className="app-store-badge"
+            />
+          </a>
+        )}
       </div>
 
       <p className="text">{app.description}</p>
@@ -68,44 +70,46 @@ export default function AppCard({ app }) {
       )}
 
       {/* bloom-menu for quick actions */}
-      <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
-        <Menu.Root direction="bottom" anchor="end">
-          <Menu.Container
-            buttonSize={32}
-            menuWidth={160}
-            menuRadius={12}
-            style={{
-              '--bloom-bg': 'rgba(14, 22, 40, 0.95)',
-              '--bloom-border': 'rgba(255, 255, 255, 0.12)'
-            }}
-          >
-            <Menu.Trigger>
-              <button
-                className="three-dot-menu"
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '20px',
-                  color: 'var(--muted)',
-                  padding: '4px 8px'
-                }}
-                aria-label="More options"
-              >
-                &#x22EF;
-              </button>
-            </Menu.Trigger>
-            <Menu.Content className="bloom-menu-content">
-              <Menu.Item onSelect={() => window.open(app.appStoreUrl, '_blank')}>
-                Visit App Store
-              </Menu.Item>
-              <Menu.Item onSelect={handleShare}>
-                Share
-              </Menu.Item>
-            </Menu.Content>
-          </Menu.Container>
-        </Menu.Root>
-      </div>
+      {app.appStoreUrl && (
+        <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
+          <Menu.Root direction="bottom" anchor="end">
+            <Menu.Container
+              buttonSize={32}
+              menuWidth={160}
+              menuRadius={12}
+              style={{
+                '--bloom-bg': 'rgba(14, 22, 40, 0.95)',
+                '--bloom-border': 'rgba(255, 255, 255, 0.12)'
+              }}
+            >
+              <Menu.Trigger>
+                <button
+                  className="three-dot-menu"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '20px',
+                    color: 'var(--muted)',
+                    padding: '4px 8px'
+                  }}
+                  aria-label="More options"
+                >
+                  &#x22EF;
+                </button>
+              </Menu.Trigger>
+              <Menu.Content className="bloom-menu-content">
+                <Menu.Item onSelect={() => window.open(app.appStoreUrl, '_blank')}>
+                  Visit App Store
+                </Menu.Item>
+                <Menu.Item onSelect={handleShare}>
+                  Share
+                </Menu.Item>
+              </Menu.Content>
+            </Menu.Container>
+          </Menu.Root>
+        </div>
+      )}
     </motion.article>
   )
 }

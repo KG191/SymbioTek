@@ -3,6 +3,7 @@ import { useEffect, useRef, memo } from 'react'
 import { motion } from 'framer-motion'
 import { StackedCarousel, ResponsiveContainer } from 'react-stacked-center-carousel'
 import { apps } from './Apps'
+import { workApps } from '../WorkApps/WorkApps'
 
 // Screenshots for Kidz app
 const kidzScreenshots = [
@@ -214,7 +215,8 @@ function formatContent(content) {
 
 export default function AppDetailPage() {
   const { appId } = useParams()
-  const app = apps.find(a => a.id === appId)
+  const allApps = [...apps, ...workApps]
+  const app = allApps.find(a => a.id === appId)
   const carouselRef = useRef()
 
   // Scroll to top when page loads
@@ -290,29 +292,53 @@ export default function AppDetailPage() {
             </div>
           </motion.div>
 
-          <motion.div
-            className="detail-page__actions"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.4 }}
-          >
-            <a
-              href={app.appStoreUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="detail-page__app-store-btn"
+          {app.appStoreUrl && (
+            <motion.div
+              className="detail-page__actions"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
             >
-              <img
-                src="/assets/app-store-badge.svg"
-                alt="Download on the App Store"
-              />
-            </a>
-          </motion.div>
+              <a
+                href={app.appStoreUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="detail-page__app-store-btn"
+              >
+                <img
+                  src="/assets/app-store-badge.svg"
+                  alt="Download on the App Store"
+                />
+              </a>
+            </motion.div>
+          )}
         </div>
       </div>
 
+      {/* Video Player for work apps */}
+      {app.videoUrl && (
+        <div className="container">
+          <motion.div
+            className="detail-page__video"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <h2 className="detail-page__screenshots-title">Demo</h2>
+            <video
+              controls
+              preload="metadata"
+              poster={app.icon}
+              className="detail-page__video-player"
+            >
+              <source src={app.videoUrl} type="video/mp4" />
+            </video>
+          </motion.div>
+        </div>
+      )}
+
       {/* Screenshots Carousel */}
-      {getScreenshotsForApp(app.id) && (
+      {!app.videoUrl && getScreenshotsForApp(app.id) && (
         <div className="container">
           <motion.div
             className="detail-page__screenshots"
@@ -377,25 +403,27 @@ export default function AppDetailPage() {
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
-          className="detail-page__bottom-cta"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
-        >
-          <a
-            href={app.appStoreUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="detail-page__download-btn"
+        {app.appStoreUrl && (
+          <motion.div
+            className="detail-page__bottom-cta"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.4 }}
           >
-            <img
-              src="/assets/app-store-badge.svg"
-              alt="Download on the App Store"
-            />
-            <span>Download {app.name}</span>
-          </a>
-        </motion.div>
+            <a
+              href={app.appStoreUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="detail-page__download-btn"
+            >
+              <img
+                src="/assets/app-store-badge.svg"
+                alt="Download on the App Store"
+              />
+              <span>Download {app.name}</span>
+            </a>
+          </motion.div>
+        )}
       </div>
     </div>
   )

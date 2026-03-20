@@ -3,6 +3,7 @@ import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import Mission from './components/Mission/Mission'
 import Apps from './components/Apps/Apps'
+import WorkApps from './components/WorkApps/WorkApps'
 import Podcasts from './components/Podcasts/Podcasts'
 import Contact from './components/Contact/Contact'
 import AppDetailPage from './components/Apps/AppDetailPage'
@@ -16,6 +17,7 @@ function HomePage() {
         <Hero />
         <Mission />
         <Apps />
+        <WorkApps />
         <Podcasts />
         <Contact />
       </main>

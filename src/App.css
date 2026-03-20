@@ -551,6 +551,21 @@ h3{margin:0 0 6px}
   text-align: center;
 }
 
+/* Video Player (Work Apps detail page) */
+.detail-page__video {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.detail-page__video-player {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
 /* Stacked Carousel */
 .carousel-wrapper {
   width: 100%;
