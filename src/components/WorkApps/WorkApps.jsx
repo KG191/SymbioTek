@@ -5,7 +5,7 @@ export const workApps = [
   {
     id: 'safety-signage-audit',
     name: 'Safety Signage Audit',
-    badge: 'Patent Pending',
+    badge: 'Pending Patent',
     tagline: 'Field auditing for AS 1319-1994 compliance.',
     description: 'A mobile-first web app for field auditing safety signage compliance with Australian Standard AS 1319-1994. AI Detection and reporting of signage compliance.',
     fullDescription: `Safety Signage Audit is a mobile-first web application designed for field auditing safety signage compliance against AS 1319-1994 (Australian Standard for Safety Signs in the Occupational Environment).
