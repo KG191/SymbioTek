@@ -14,7 +14,7 @@ FIELD AUDITING
 Conduct on-site safety signage audits with your mobile device. Capture context and closeup photos of each sign, with automatic GPS location tracking for every finding.
 
 AI-POWERED DETECTION
-Integrates Claude Vision AI for high-accuracy sign detection and classification. Fine-tuned ML models help identify sign types and assess compliance against the standard.
+Integrates the best AI vision detection for high-accuracy sign detection and classification. Fine-tuned ML models help identify sign types and assess compliance against the standard.
 
 COMPLIANCE ASSESSMENT
 Comprehensive compliance checklist covering:
