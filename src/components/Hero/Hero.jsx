@@ -13,7 +13,7 @@ export default function Hero() {
           variants={staggerContainer}
         >
           <motion.h1 variants={fadeInUp}>
-            People, Processes & Technology Symbiosis
+            Symbiosis of Intelligence and Trust
           </motion.h1>
 
           <motion.p className="lead" variants={fadeInUp}>
