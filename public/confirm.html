@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmed — Safety Signage Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .checkmark {
+            width: 64px;
+            height: 64px;
+            background: #e6f4ea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+        }
+        .checkmark svg {
+            width: 32px;
+            height: 32px;
+            stroke: #006B3F;
+        }
+        h1 {
+            font-size: 1.35rem;
+            color: #004B87;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        .countdown {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: #004B87;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .brand {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="checkmark">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+        <h1>Email Confirmed</h1>
+        <p>Your account is verified. You can now sign in to the Safety Signage Audit app.</p>
+        <p class="countdown" id="countdown">Redirecting in 3 seconds...</p>
+        <a href="https://kg191.github.io/Safety-Signage/" class="btn" id="open-btn">Open App</a>
+        <div class="brand">SymbioTeK Pty Ltd</div>
+    </div>
+
+    <script>
+        var seconds = 3;
+        var el = document.getElementById('countdown');
+        var timer = setInterval(function() {
+            seconds--;
+            if (seconds <= 0) {
+                clearInterval(timer);
+                el.textContent = 'Redirecting now...';
+                window.location.href = 'https://kg191.github.io/Safety-Signage/';
+            } else {
+                el.textContent = 'Redirecting in ' + seconds + ' second' + (seconds > 1 ? 's' : '') + '...';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
