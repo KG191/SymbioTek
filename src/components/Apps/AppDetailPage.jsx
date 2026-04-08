@@ -312,6 +312,24 @@ export default function AppDetailPage() {
               </a>
             </motion.div>
           )}
+
+          {app.webUrl && (
+            <motion.div
+              className="detail-page__actions"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+            >
+              <a
+                href={app.webUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="detail-page__launch-btn"
+              >
+                Launch App
+              </a>
+            </motion.div>
+          )}
         </div>
       </div>
 
@@ -421,6 +439,24 @@ export default function AppDetailPage() {
                 alt="Download on the App Store"
               />
               <span>Download {app.name}</span>
+            </a>
+          </motion.div>
+        )}
+
+        {app.webUrl && (
+          <motion.div
+            className="detail-page__bottom-cta"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.4 }}
+          >
+            <a
+              href={app.webUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="detail-page__launch-btn"
+            >
+              Launch {app.name}
             </a>
           </motion.div>
         )}

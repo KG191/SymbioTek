@@ -33,7 +33,8 @@ All data is stored locally on your device. No data collection or transmission â€
 AS 1319-1994 REFERENCE
 Built-in quick reference guide for the Australian Standard, so you always have the compliance requirements at your fingertips during field audits.`,
     icon: '/assets/safety-signage-icon.png',
-    videoUrl: '/assets/safety-signage/safety-signage-video.mp4'
+    videoUrl: '/assets/safety-signage/safety-signage-video.mp4',
+    webUrl: 'https://mysafesigns.symbio-tek.com'
   }
 ]
 

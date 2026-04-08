@@ -677,6 +677,25 @@ h3{margin:0 0 6px}
   width: auto;
 }
 
+.detail-page__launch-btn {
+  display: inline-block;
+  padding: 16px 40px;
+  border-radius: 16px;
+  border: 1px solid rgba(67, 230, 198, 0.25);
+  background: linear-gradient(90deg, rgba(67, 230, 198, 0.15), rgba(106, 166, 255, 0.12));
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.detail-page__launch-btn:hover {
+  background: linear-gradient(90deg, rgba(67, 230, 198, 0.25), rgba(106, 166, 255, 0.2));
+  border-color: rgba(67, 230, 198, 0.4);
+  transform: translateY(-2px);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .detail-page__sections {
