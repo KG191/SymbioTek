@@ -151,7 +151,7 @@ export default function Apps() {
     <Section id="apps">
       <div className="section__head">
         <h2>Lifestyle</h2>
-        <p className="muted">iOS apps built and successfully launched under the SymbioTeK vision.</p>
+        <p className="muted">Improve your, and your loved ones, mental and physical wellbeing.</p>
       </div>
 
       <div className="apps">

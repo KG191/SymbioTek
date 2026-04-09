@@ -96,7 +96,7 @@ export default function WorkApps() {
     <Section id="work-apps">
       <div className="section__head">
         <h2>Professional</h2>
-        <p className="muted">Tools built for workplace productivity, compliance, and performance.</p>
+        <p className="muted">Improve productivity, compliance, and performance.</p>
       </div>
 
       <div className="apps">
