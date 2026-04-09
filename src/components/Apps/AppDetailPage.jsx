@@ -121,7 +121,7 @@ function getScreenshotsForApp(appId) {
       return wendyScreenshots
     case 'optisense':
       return optisenseScreenshots
-    case 'safety-signage-audit-trial':
+    case 'safety-signage-audit':
       return safetySignageScreenshots
     default:
       return null
