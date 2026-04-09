@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { useEffect, useRef, memo } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import { motion } from 'framer-motion'
 import { StackedCarousel, ResponsiveContainer } from 'react-stacked-center-carousel'
 import { apps } from './Apps'
@@ -67,6 +67,20 @@ const optisenseScreenshots = [
   { src: '/assets/optisense-screenshots/Settings.PNG', alt: 'Settings' },
 ]
 
+// Screenshots for Safety Signage Audit trial page
+const safetySignageScreenshots = [
+  { src: '/assets/safety-signage/app-cover.jpg', alt: 'Safety Signage Audit' },
+  { src: '/assets/safety-signage/dashboard.jpg', alt: 'Dashboard' },
+  { src: '/assets/safety-signage/new-audit.jpg', alt: 'New Audit' },
+  { src: '/assets/safety-signage/context-photo.jpg', alt: 'Wide-Angle Context Photo' },
+  { src: '/assets/safety-signage/closeup-photo.jpg', alt: 'Sign Close-up Photo' },
+  { src: '/assets/safety-signage/ai-report.jpg', alt: 'AI-Generated Compliance Report' },
+  { src: '/assets/safety-signage/compliance-checklist.jpg', alt: 'Compliance Checklist' },
+  { src: '/assets/safety-signage/report-generated.jpg', alt: 'Report Generated' },
+  { src: '/assets/safety-signage/gap-analysis.jpg', alt: 'Gap Analysis & Recommendations' },
+  { src: '/assets/safety-signage/recommendations.jpg', alt: 'Recommendations & Export' },
+]
+
 // Get Forava screenshots ordered by closest upcoming festival
 function getForavaScreenshotsOrdered() {
   const now = new Date()
@@ -107,6 +121,8 @@ function getScreenshotsForApp(appId) {
       return wendyScreenshots
     case 'optisense':
       return optisenseScreenshots
+    case 'safety-signage-audit-trial':
+      return safetySignageScreenshots
     default:
       return null
   }
@@ -254,6 +270,7 @@ export default function AppDetailPage() {
   }
 
   const sections = parseDescriptionSections(app.fullDescription)
+  const [openFaq, setOpenFaq] = useState(null)
 
   return (
     <div className="detail-page">
@@ -287,8 +304,17 @@ export default function AppDetailPage() {
               className="detail-page__icon"
             />
             <div>
-              <h1 className="detail-page__title">{app.name}{app.badge && <span className="app__badge">{app.badge}</span>}</h1>
-              <p className="detail-page__tagline">{app.tagline}</p>
+              {app.heroHeadline ? (
+                <>
+                  <h1 className="detail-page__title">{app.heroHeadline}{app.heroCopyright && <sup className="detail-page__copyright">&copy;{app.heroCopyright}</sup>}{app.badge && <span className="app__badge">{app.badge}</span>}</h1>
+                  <p className="detail-page__subheadline">{app.heroSubheadline}</p>
+                </>
+              ) : (
+                <>
+                  <h1 className="detail-page__title">{app.name}{app.badge && <span className="app__badge">{app.badge}</span>}</h1>
+                  <p className="detail-page__tagline">{app.tagline}</p>
+                </>
+              )}
             </div>
           </motion.div>
 
@@ -332,6 +358,20 @@ export default function AppDetailPage() {
           )}
         </div>
       </div>
+
+      {/* Trust Bar */}
+      {app.trustSignals && (
+        <motion.div
+          className="detail-page__trust-bar"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.4 }}
+        >
+          {app.trustSignals.map((signal, i) => (
+            <span key={i} className="detail-page__trust-pill">{signal}</span>
+          ))}
+        </motion.div>
+      )}
 
       {/* Video Player for work apps */}
       {app.videoUrl && (
@@ -420,7 +460,67 @@ export default function AppDetailPage() {
           ))}
         </div>
 
+        {/* How It Works */}
+        {app.howItWorks && (
+          <motion.div
+            className="detail-page__how-it-works"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <h2 className="detail-page__section-heading">How It Works</h2>
+            <div className="detail-page__steps">
+              {app.howItWorks.map((item) => (
+                <div key={item.step} className="detail-page__step">
+                  <span className="detail-page__step-number">{item.step}</span>
+                  <h3 className="detail-page__step-title">{item.title}</h3>
+                  <p className="detail-page__step-desc">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* FAQ */}
+        {app.faq && (
+          <motion.div
+            className="detail-page__faq"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
+            <h2 className="detail-page__section-heading">Frequently Asked Questions</h2>
+            {app.faq.map((item, i) => (
+              <div key={i} className={`detail-page__faq-item${openFaq === i ? ' detail-page__faq-item--open' : ''}`}>
+                <button
+                  className="detail-page__faq-question"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                >
+                  <span>{item.question}</span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="detail-page__faq-chevron">
+                    <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <div className="detail-page__faq-answer">
+                  <p>{item.answer}</p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+
         {/* Bottom CTA */}
+        {app.webUrl && (
+          <motion.div
+            className="detail-page__bottom-cta"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.4 }}
+          >
+            <p className="detail-page__cta-text">Ready to streamline your safety audits?</p>
+          </motion.div>
+        )}
+
         {app.appStoreUrl && (
           <motion.div
             className="detail-page__bottom-cta"
