@@ -27,7 +27,7 @@ export default function Podcasts() {
     <Section id="podcasts">
       <div className="section__head">
         <h2>Mentoring</h2>
-        <p className="muted">Podcast series exploring personal and professional growth.</p>
+        <p className="muted">Explore and enhance personal and professional growth.</p>
       </div>
 
       <div className="podcasts">
