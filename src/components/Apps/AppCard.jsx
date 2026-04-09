@@ -48,48 +48,26 @@ export default function AppCard({ app }) {
       <p className="text">{app.description}</p>
 
       {/* More details button - bottom left */}
-      <div className="app__details-row">
-        {app.fullDescription && (
-          <Link to={`/app/${app.id}`} className="app__details-btn">
-            More details
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.5 2.5L8 6L4.5 9.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-        )}
-        {app.id === 'safety-signage-audit' && (
-          <Link to="/app/safety-signage-audit-trial" className="app__trial-btn">
-            Trial page
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.5 2.5L8 6L4.5 9.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-        )}
-      </div>
+      {app.fullDescription && (
+        <Link to={`/app/${app.id}`} className="app__details-btn">
+          More details
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.5 2.5L8 6L4.5 9.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Link>
+      )}
 
       {/* bloom-menu for quick actions */}
       {app.appStoreUrl && (
