@@ -31,7 +31,7 @@ export default function Mission() {
   return (
     <Section id="mission" animate={false}>
       <h2>Mission</h2>
-      <p className="tagline">Engineering with Intelligence</p>
+      <p className="tagline">Build Intelligence and Trust Symbiotically</p>
       <p className="text">
         Build products that feel personal, respectful, and empowering &mdash; helping people learn, celebrate,
         recover, perform, and connect.
