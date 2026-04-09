@@ -38,6 +38,56 @@ No need to carry the standard on-site. A built-in quick reference covers all sig
       { question: 'Can I export my audit data?', answer: 'Yes. Generate comprehensive gap-analysis reports and export your findings as CSV for further analysis, record-keeping, or sharing with stakeholders.' }
     ],
     icon: '/assets/safety-signage-icon.png'
+  },
+  {
+    id: 'wendy',
+    name: 'Wendy Performance Coach',
+    tagline: 'AI coaching for clarity and performance under pressure.',
+    description: 'Think through challenges, make better decisions, and perform under pressure. Voice conversations for decision clarity, stress management, conflict preparation, and leadership presence. Conversations stay on your device.',
+    fullDescription: `Inspired by elite executive coaching, Wendy helps professionals think through challenges, make better decisions, and perform under pressure. Whether you're preparing for a tough conversation, navigating a career crossroads, or just need to clear your head, Wendy is here. Meet Wendy — your personal high-performance coach, available whenever you need clarity.
+
+HOW WENDY HELPS
+
+• Decision Clarity — Work through complex choices with structured frameworks
+• Stress Management — De-escalate pressure with proven techniques
+• Conflict Preparation — Prepare for difficult conversations and negotiations
+• Confidence Building — Recover from setbacks and rebuild momentum
+• Leadership Presence — Sharpen your communication and executive presence
+
+WHAT MAKES WENDY DIFFERENT
+
+Unlike generic chatbots, Wendy is designed specifically for professional performance:
+
+→ Coaching, Not Therapy — Focused on action and forward movement
+→ Contextual Understanding — Remembers your situation and builds on previous conversations
+→ Structured Frameworks — Decision scorecards, 24-hour reset plans, and more
+→ Voice Conversations — Speak naturally; Wendy listens and responds
+→ Complete Privacy — Conversations stay on your device
+
+THE WENDY APPROACH
+
+Wendy combines empathy with directness. She'll validate your feelings, then help you separate emotion from decision. Every conversation ends with concrete next steps — not vague encouragement. The app includes safety detection for self-harm indicators and responds with empathetic, supportive messages encouraging users to talk through their feelings. Wendy is a performance coach, not a therapist, and will respond with care when sensitive topics arise.
+
+PERFECT FOR
+
+• Executives and managers facing high-stakes decisions
+• Professionals navigating career transitions
+• Anyone preparing for difficult conversations
+• Leaders who need a trusted thinking partner
+
+START FREE
+
+Try Wendy with 5 free coaching sessions. If she helps you think clearer, upgrade to Premium for unlimited conversations.
+
+Premium Subscription ($9.99/month):
+• Unlimited coaching conversations
+• Priority AI responses
+• Premium voice options
+• Cancel anytime
+
+Your mental clarity is worth investing in. Download Wendy and start your first session today.`,
+    icon: '/assets/wendy-icon.png',
+    appStoreUrl: 'https://apps.apple.com/au/app/wendy-performance-coach/id6755900133'
   }
 ]
 
@@ -45,8 +95,8 @@ export default function WorkApps() {
   return (
     <Section id="work-apps">
       <div className="section__head">
-        <h2>Work-related apps</h2>
-        <p className="muted">Professional tools built for workplace productivity and compliance.</p>
+        <h2>Professional</h2>
+        <p className="muted">Tools built for workplace productivity, compliance, and performance.</p>
       </div>
 
       <div className="apps">
