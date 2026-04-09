@@ -231,7 +231,7 @@ function formatContent(content) {
 
 export default function AppDetailPage() {
   const { appId } = useParams()
-  const allApps = [...apps, ...workApps]
+  const allApps = [...apps, ...workApps].filter(a => !a.hidden)
   const app = allApps.find(a => a.id === appId)
   const carouselRef = useRef()
 

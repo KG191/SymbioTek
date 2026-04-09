@@ -37,7 +37,8 @@ No need to carry the standard on-site. A built-in quick reference covers all sig
       { question: 'How does the AI analysis work?', answer: 'State-of-the-art vision AI models analyse your photos to detect sign types, assess condition, and evaluate compliance against the standard — delivering results in seconds.' },
       { question: 'Can I export my audit data?', answer: 'Yes. Generate comprehensive gap-analysis reports and export your findings as CSV for further analysis, record-keeping, or sharing with stakeholders.' }
     ],
-    icon: '/assets/safety-signage-icon.png'
+    icon: '/assets/safety-signage-icon.png',
+    hidden: true
   },
   {
     id: 'wendy',
@@ -100,7 +101,7 @@ export default function WorkApps() {
       </div>
 
       <div className="apps">
-        {workApps.map((app, index) => (
+        {workApps.filter(app => !app.hidden).map((app, index) => (
           <AppCard key={index} app={app} />
         ))}
       </div>
