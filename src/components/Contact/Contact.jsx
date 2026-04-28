@@ -14,8 +14,8 @@ export default function Contact() {
       <Card className="contact" animate={false}>
         <div>
           <p className="muted">Email</p>
-          <a className="link" href="mailto:symbiotek01@gmail.com">
-            symbiotek01@gmail.com
+          <a className="link" href="mailto:symbiotek@symbio-tek.com">
+            symbiotek@symbio-tek.com
           </a>
         </div>
 
