@@ -109,6 +109,8 @@ h1, h2, h3, h4, h5 {
 .stagger-4 { transition-delay: 0.4s; }
 .stagger-5 { transition-delay: 0.5s; }
 .stagger-6 { transition-delay: 0.6s; }
+.stagger-7 { transition-delay: 0.7s; }
+.stagger-8 { transition-delay: 0.8s; }
 
 /* ===== SECTION FADE ON EXIT ===== */
 .section-wrapper { transition: opacity 0.5s ease; }
@@ -1087,7 +1089,11 @@ h1, h2, h3, h4, h5 {
 .agent-card p { font-size: 0.88rem; color: var(--gray-400); line-height: 1.6; }
 
 .category-header {
-  text-align: center; margin: 60px 0 24px; position: relative;
+  /* Extra top margin keeps the absolutely-positioned carousel cards above
+     (overflow: visible on .carousel-wrapper) from overlapping the dot
+     indicators or this header text. z-index keeps the title text above
+     any visual overflow from the previous carousel. */
+  text-align: center; margin: 110px 0 32px; position: relative; z-index: 5;
 }
 .category-header::before {
   content: '';
@@ -1967,18 +1973,27 @@ h1, h2, h3, h4, h5 {
         <div class="tech-provider">Google Maps Platform</div><div class="tech-role">Mapping & Routing</div>
       </div>
       <div class="tech-item reveal stagger-3">
-        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#1a1a2e"/><path d="M20 8C14 8 10 12 10 17C6 17 3 20 3 24s3 7 7 7h20c4 0 7-3 7-7s-3-7-7-7c0-5-4-9-10-9Z" fill="#60a5fa" opacity="0.8"/><path d="M16 22v5M20 19v8M24 21v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <div class="tech-provider">Open-Meteo & WeatherKit</div><div class="tech-role">Weather Data</div>
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#000"/><path d="M27 11.5c-.5.7-1.3 1.2-2 1.2-.8 0-1.5-.6-2.5-.6-1.3 0-2.6.8-3.3 2.2-1.4 2.7-.4 6.8 1 9 .7 1.1 1.6 2.3 2.7 2.3 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 2-1.1 2.7-2.2.5-.8.9-1.6 1.1-2-.1 0-2.1-.8-2.1-3.2 0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.5-2.9-1.6zM24.5 8c.6-.7 1.6-1.2 2.4-1.3.1 1-.3 2-1 2.7-.6.7-1.5 1.2-2.4 1.2-.1-1 .4-1.9 1-2.6z" fill="white"/><path d="M9 28c0-2 1.5-3.5 3.5-3.5 0-1.5 1.2-2.7 2.7-2.7 0.3 0 0.6 0.05 0.9 0.15C16.7 21 18 20.3 19.5 20.3c1.8 0 3.3 1.1 3.9 2.7 1.6 0.2 2.8 1.5 2.8 3.2 0 1.7-1.4 3.1-3.1 3.1H10.7C9.8 29.3 9 28.7 9 28z" fill="#60a5fa"/></svg>
+        <div class="tech-provider">Apple WeatherKit</div><div class="tech-role">Weather Data (Primary)</div>
       </div>
       <div class="tech-item reveal stagger-4">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#1a1a2e"/><path d="M20 8C14 8 10 12 10 17C6 17 3 20 3 24s3 7 7 7h20c4 0 7-3 7-7s-3-7-7-7c0-5-4-9-10-9Z" fill="#60a5fa" opacity="0.8"/><path d="M16 22v5M20 19v8M24 21v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="tech-provider">Open-Meteo</div><div class="tech-role">Weather Data (Fallback)</div>
+      </div>
+      <div class="tech-item reveal stagger-5">
         <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#333"/><path d="M20 6c-7.7 0-14 6.3-14 14s6.3 14 14 14 14-6.3 14-14S27.7 6 20 6z" fill="none" stroke="#999" stroke-width="1"/><path d="M10 20h4l2-5 3 10 3-8 2 3h6" stroke="#34c759" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <div class="tech-provider">Apple Speech &amp; AVSpeech</div><div class="tech-role">Voice</div>
       </div>
-      <div class="tech-item reveal stagger-5">
+      <div class="tech-item reveal stagger-6">
         <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#000"/><path d="M28 10.5c-.5.7-1.3 1.2-2 1.2-.8 0-1.5-.6-2.5-.6-1.3 0-2.6.8-3.3 2.2-1.4 2.7-.4 6.8 1 9 .7 1.1 1.6 2.3 2.7 2.3 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 2-1.1 2.7-2.2.5-.8.9-1.6 1.1-2-.1 0-2.1-.8-2.1-3.2 0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.5-2.9-1.6zM25.5 7c.6-.7 1.6-1.2 2.4-1.3.1 1-.3 2-1 2.7-.6.7-1.5 1.2-2.4 1.2-.1-1 .4-1.9 1-2.6z" fill="white"/><path d="M8 30l4-4M8 30h4M8 30v-4" stroke="#007aff" stroke-width="1.5" stroke-linecap="round"/></svg>
         <div class="tech-provider">iOS &amp; CarPlay</div><div class="tech-role">Platform</div>
       </div>
-      <div class="tech-item reveal stagger-6">
+      <div class="tech-item reveal stagger-7" style="position:relative;">
+        <span style="position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#2563eb,#38bdf8);color:#fff;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:3px 8px;border-radius:999px;text-transform:uppercase;">Coming Soon</span>
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#fff"/><defs><linearGradient id="ps-gloss" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0.18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M11.5 7.5l13.6 12.5L11.5 32.5C11.2 31.9 11 31.2 11 30.5V9.5c0-.7.2-1.4.5-2z" fill="#34A853"/><path d="M11.5 7.5C11.9 7.2 12.4 7 13 7c.6 0 1.1.2 1.5.5l13.6 7.8-3 2.7L11.5 7.5z" fill="#4285F4"/><path d="M11.5 32.5l13.6-12.5 3 2.7-13.6 7.8c-.4.3-.9.5-1.5.5-.6 0-1.1-.2-1.5-.5z" fill="#EA4335"/><path d="M25.1 20l3-2.7 4.4 2.5c.7.4 1.1 1.1 1.1 1.9 0 .8-.4 1.5-1.1 1.9l-4.4 2.5-3-6.1z" fill="#FBBC04"/><path d="M11.5 7.5l13.6 12.5L11.5 32.5z" fill="url(#ps-gloss)"/></svg>
+        <div class="tech-provider">Android &amp; Google Play</div><div class="tech-role">Platform Expansion</div>
+      </div>
+      <div class="tech-item reveal stagger-8">
         <svg viewBox="0 0 40 28" width="40" height="28" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;">
           <!-- Australian Flag -->
           <rect width="40" height="28" fill="#00008B"/>
