@@ -3,6 +3,79 @@ import AppCard from './AppCard'
 
 export const apps = [
   {
+    id: 'weathernavigator',
+    name: 'WeatherNavigator',
+    badge: 'Coming Soon',
+    comingSoon: true,
+    tagline: 'AI weather-safe navigation. Skye sees the storm before you do.',
+    description: 'The only navigation app that shows you the weather along your entire route — at the time you\'ll actually be there. Colour-coded routes, predictive storm intercept, and an AI co-pilot named Skye that briefs you before every drive and reroutes you around hazards in real time.',
+    fullDescription: `WeatherNavigator is the only navigation app that shows you the weather along your entire route — at the time you'll actually be there.
+
+Google Maps shows traffic. WeatherNavigator shows weather. See exactly what conditions you'll drive through, colour-coded on your route: green for clear, blue for mild, orange for moderate, red for severe.
+
+WEATHER-AWARE NAVIGATION
+• Colour-coded route shows weather severity at every point along your drive
+• 6 live weather map layers: precipitation, snow, temperature, wind, clouds, pressure
+• Live traffic layer with route-specific speed colouring
+• Weather-safe alternative routes when hazards are detected
+• Automatic rerouting around severe weather with AI explanation
+• Multi-stop trip planning with weather at every waypoint
+• Weather annotations along your route when zoomed out
+
+SKYE — YOUR AI WEATHER CO-PILOT
+• "Take me to Sydney via Coffs Harbour" — fully hands-free voice navigation
+• AI weather briefing before every drive: "Clear skies for the first hour, heavy rain near Coffs Harbour in about 3 hours"
+• Ask questions while driving: "How long will this rain last?"
+• Proactive hazard warnings: Skye explains what's ahead and recommends actions
+• Adapts to your driving style — learns your alert preferences over time
+• Turn-by-turn voice directions with full road name expansion
+
+DESIGNED FOR DRIVERS
+• CarPlay support — full navigation on your car display
+• 2D and 3D navigation views with smooth animated arrowhead
+• "Hey Skye" wake word for hands-free activation
+• Choose your preferred Apple voice for Skye
+• Works offline for navigation (weather requires connectivity)
+
+BUILT ON REAL DATA
+• Weather forecasts from Apple WeatherKit and Open-Meteo
+• Live precipitation radar: NWS NEXRAD (USA) and OpenWeatherMap (global)
+• Bureau of Meteorology AWS observation cross-check (Australia)
+• Routing powered by Google Maps
+• AI powered by Claude (Anthropic) for natural conversation
+• Time-aligned forecasts: see what the weather will be when YOU arrive at each point, not what it is now
+
+WHY WEATHERNAVIGATOR?
+Every other navigation app shows you a blue line on a map. WeatherNavigator shows you the weather along that line — at the exact time you'll be driving through it. No more checking the weather app separately. No more driving blind into a storm.
+
+Whether it's a 20-minute commute or a 10-hour road trip, WeatherNavigator keeps you informed and safe.
+
+SUBSCRIPTION
+WeatherNavigator offers a 7-day free trial with full access to all features. After the trial:
+• Monthly: $3.99/month
+• Annual: $29.99/year (save 37%)
+
+Payment is charged to your Apple ID account. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. Manage subscriptions in Settings > Apple ID > Subscriptions.`,
+    icon: '/assets/weathernavigator-icon.png',
+    trustSignals: ['Apple WeatherKit', 'CarPlay', 'Skye AI Co-pilot', '7-day free trial'],
+    howItWorks: [
+      { step: 1, title: 'Plan your drive', description: 'Tell Skye where you\'re going. She briefs you on weather along the entire route — at the time you\'ll actually be there, not now.' },
+      { step: 2, title: 'See the weather, not just the road', description: 'Your route is colour-coded for hazards — green clear, orange moderate, red severe. Tap any segment for the forecast at that point.' },
+      { step: 3, title: 'Drive with a co-pilot', description: 'Skye warns you minutes before rain reaches you, reroutes around storms, and answers questions hands-free. CarPlay supported.' }
+    ],
+    faq: [
+      { question: 'Where does the weather data come from?', answer: 'Forecasts are from Apple WeatherKit (primary) and Open-Meteo (fallback). Live radar uses NWS NEXRAD in the US and OpenWeatherMap globally. Australian users also get a Bureau of Meteorology AWS observation cross-check on the precipitation layer.' },
+      { question: 'Does it work in my country?', answer: 'Forecasts and routing are available globally. Some live-radar layers are region-specific (NEXRAD is US, OpenWeatherMap is global, BoM is Australia).' },
+      { question: 'Do I need a subscription?', answer: 'There\'s a 7-day free trial of every feature. After that, Monthly is $3.99/month and Annual is $29.99/year (which works out to $2.50/month). Both unlock the same complete feature set.' },
+      { question: 'Does it support CarPlay?', answer: 'Yes — full navigation, alerts, and Skye briefings work on CarPlay displays.' },
+      { question: 'When is it launching?', answer: 'WeatherNavigator is in App Store review. Watch this space for the launch date.' }
+    ],
+    legalLinks: [
+      { label: 'Privacy Policy', href: '/weathernavigator/privacy-policy.html' },
+      { label: 'Terms of Use (EULA)', href: '/weathernavigator/terms-of-use.html' }
+    ]
+  },
+  {
     id: 'optisense',
     name: 'OptiSense',
     tagline: 'AI health and recovery coach.',

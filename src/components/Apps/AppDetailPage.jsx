@@ -51,6 +51,18 @@ const wendyScreenshots = [
   { src: '/assets/wendy-screenshots/Setting bottom dark mode.png', alt: 'Settings (continued)' },
 ]
 
+// Screenshots for WeatherNavigator app
+const weatherNavigatorScreenshots = [
+  { src: '/assets/weathernavigator-screenshots/1_IMG_1226.PNG', alt: 'Route with weather overlay' },
+  { src: '/assets/weathernavigator-screenshots/2_IMG_1227.PNG', alt: 'Skye AI briefing' },
+  { src: '/assets/weathernavigator-screenshots/3_IMG_1228.PNG', alt: 'Weather layers' },
+  { src: '/assets/weathernavigator-screenshots/4_IMG_1230.PNG', alt: 'Live precipitation radar' },
+  { src: '/assets/weathernavigator-screenshots/5_IMG_1231.PNG', alt: 'Turn-by-turn navigation' },
+  { src: '/assets/weathernavigator-screenshots/6_IMG_1232.PNG', alt: 'Weather annotations along route' },
+  { src: '/assets/weathernavigator-screenshots/7_IMG_1233.PNG', alt: 'CarPlay support' },
+  { src: '/assets/weathernavigator-screenshots/8_IMG_1236.PNG', alt: 'Settings and customisation' },
+]
+
 // Screenshots for OptiSense app
 const optisenseScreenshots = [
   { src: '/assets/optisense-screenshots/Welcome page.PNG', alt: 'Welcome' },
@@ -123,6 +135,8 @@ function getScreenshotsForApp(appId) {
       return optisenseScreenshots
     case 'safety-signage-audit':
       return safetySignageScreenshots
+    case 'weathernavigator':
+      return weatherNavigatorScreenshots
     default:
       return null
   }
@@ -291,6 +305,32 @@ export default function AppDetailPage() {
               Home
             </Link>
           </motion.div>
+
+          {app.comingSoon && (
+            <motion.div
+              className="detail-page__coming-soon-banner"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+              style={{
+                margin: '0 auto 24px',
+                padding: '14px 22px',
+                borderRadius: 14,
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(56, 189, 248, 0.18))',
+                border: '1px solid rgba(96, 165, 250, 0.45)',
+                color: 'var(--white, #ffffff)',
+                fontWeight: 600,
+                letterSpacing: 0.4,
+                maxWidth: 720
+              }}
+            >
+              <div style={{ fontSize: 14, textTransform: 'uppercase', letterSpacing: 1.5, opacity: 0.85, marginBottom: 4 }}>Coming Soon</div>
+              <div style={{ fontSize: 15, fontWeight: 500, opacity: 0.9 }}>
+                {app.name} is in App Store review. Launching soon.
+              </div>
+            </motion.div>
+          )}
 
           <motion.div
             className="detail-page__app-info"
@@ -558,6 +598,37 @@ export default function AppDetailPage() {
             >
               Launch {app.name}
             </a>
+          </motion.div>
+        )}
+
+        {app.legalLinks && app.legalLinks.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.65, duration: 0.4 }}
+            style={{
+              marginTop: 32,
+              paddingTop: 20,
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              display: 'flex',
+              gap: 24,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              fontSize: 14,
+              opacity: 0.85
+            }}
+          >
+            {app.legalLinks.map((link, i) => (
+              <a
+                key={i}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: 'var(--muted, #9ca3af)', textDecoration: 'underline' }}
+              >
+                {link.label}
+              </a>
+            ))}
           </motion.div>
         )}
       </div>
