@@ -396,6 +396,28 @@ export default function AppDetailPage() {
               </a>
             </motion.div>
           )}
+
+          {app.marketingUrl && (
+            <motion.div
+              className="detail-page__actions"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.32, duration: 0.4 }}
+            >
+              <a
+                href={app.marketingUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="detail-page__launch-btn"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(56, 189, 248, 0.95))',
+                  border: '1px solid rgba(96, 165, 250, 0.5)'
+                }}
+              >
+                Check out full details
+              </a>
+            </motion.div>
+          )}
         </div>
       </div>
 

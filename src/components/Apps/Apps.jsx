@@ -57,6 +57,7 @@ WeatherNavigator offers a 7-day free trial with full access to all features. Aft
 
 Payment is charged to your Apple ID account. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. Manage subscriptions in Settings > Apple ID > Subscriptions.`,
     icon: '/assets/weathernavigator-icon.png',
+    marketingUrl: '/weathernavigator/marketing.html',
     trustSignals: ['Apple WeatherKit', 'CarPlay', 'Skye AI Co-pilot', '7-day free trial'],
     howItWorks: [
       { step: 1, title: 'Plan your drive', description: 'Tell Skye where you\'re going. She briefs you on weather along the entire route — at the time you\'ll actually be there, not now.' },

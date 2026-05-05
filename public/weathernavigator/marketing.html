@@ -1,0 +1,2332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeatherNavigator — AI Weather-Safe Navigation</title>
+<meta name="description" content="The world's first AI weather-safe driving platform. Skye sees the storm before you do.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+  --blue-900: #0a1628;
+  --blue-800: #0f2140;
+  --blue-700: #142d5a;
+  --blue-600: #1a3f7a;
+  --blue-500: #2563eb;
+  --blue-400: #3b82f6;
+  --blue-300: #60a5fa;
+  --blue-200: #93c5fd;
+  --blue-100: #dbeafe;
+  --sky-400: #38bdf8;
+  --sky-300: #7dd3fc;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+  --orange-500: #f97316;
+  --red-500: #ef4444;
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --white: #ffffff;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-bg-light: rgba(255, 255, 255, 0.85);
+  --section-padding: clamp(80px, 12vh, 140px);
+  --container-width: 1200px;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--white);
+  background: var(--blue-900);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* ===== SCROLL REVEAL SYSTEM ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+
+/* ===== SECTION FADE ON EXIT ===== */
+.section-wrapper { transition: opacity 0.5s ease; }
+.section-wrapper.fading { opacity: 0.15; }
+
+/* ===== UTILITY ===== */
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 48px);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--sky-300), var(--blue-300), var(--sky-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-warm {
+  background: linear-gradient(135deg, var(--amber-400), var(--orange-500), var(--red-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-orange {
+  background: linear-gradient(135deg, var(--orange-500), var(--amber-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sky-400);
+  margin-bottom: 20px;
+}
+.section-label svg { width: 16px; height: 16px; }
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 24px;
+  color: var(--white);
+}
+
+.section-subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--gray-400);
+  line-height: 1.7;
+  max-width: 700px;
+  font-weight: 300;
+}
+
+/* ===== GLASS CARD ===== */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 36px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+}
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== NAVIGATION BAR ===== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 16px 0;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+}
+.navbar.scrolled {
+  background: rgba(10, 22, 40, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--glass-border);
+}
+.navbar .container { display: flex; align-items: center; justify-content: space-between; }
+.navbar-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--white); }
+.navbar-brand svg { width: 36px; height: 36px; }
+.navbar-brand span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; }
+.navbar-links { display: flex; gap: 32px; list-style: none; }
+.navbar-links a { text-decoration: none; color: var(--gray-400); font-size: 0.9rem; font-weight: 500; transition: color 0.3s ease; }
+.navbar-links a:hover { color: var(--white); }
+.navbar-cta {
+  background: linear-gradient(135deg, var(--blue-500), var(--sky-400));
+  color: var(--white) !important;
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-weight: 600 !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+.navbar-cta:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(37, 99, 235, 0.4); }
+.mobile-menu-btn { display: none; background: none; border: none; color: var(--white); cursor: pointer; padding: 8px; }
+
+/* ===== HERO SECTION ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 80px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37, 99, 235, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Sunshine glow in top-right */
+.hero-sun {
+  position: absolute;
+  top: 60px;
+  right: 80px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.35) 0%, rgba(251, 191, 36, 0.1) 40%, transparent 70%);
+  pointer-events: none;
+  animation: sun-pulse 5s ease-in-out infinite;
+  z-index: 1;
+}
+.hero-sun::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.4), 0 0 80px rgba(251, 191, 36, 0.15);
+}
+@keyframes sun-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* Animated rain drops */
+.hero-weather {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.raindrop {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--sky-400));
+  animation: rain-fall linear infinite;
+  opacity: 0;
+}
+@keyframes rain-fall {
+  0% { transform: translateY(-100px); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(calc(100vh + 100px)); opacity: 0; }
+}
+
+/* Snowflakes */
+.snowflake {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 14px;
+  animation: snow-fall linear infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes snow-fall {
+  0% { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(calc(100vh + 40px)) rotate(360deg); opacity: 0; }
+}
+
+/* Lightning bolt */
+.lightning {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 4;
+  filter: drop-shadow(0 0 12px rgba(251,191,36,0.8)) drop-shadow(0 0 40px rgba(251,191,36,0.4));
+}
+/* Sky-wide flash overlay */
+.lightning-sky-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  background: radial-gradient(ellipse at var(--flash-x, 30%) 0%, rgba(251,191,36,0.12) 0%, rgba(200,180,255,0.06) 30%, transparent 70%);
+}
+@keyframes lightning-flash {
+  0% { opacity: 0; }
+  1% { opacity: 1; }
+  2.5% { opacity: 0.15; }
+  3.5% { opacity: 1; }
+  5% { opacity: 0.8; }
+  6% { opacity: 0.1; }
+  6.5% { opacity: 0.6; }
+  8% { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes sky-flash {
+  0% { opacity: 0; }
+  1% { opacity: 1; }
+  2.5% { opacity: 0.2; }
+  3.5% { opacity: 0.8; }
+  5% { opacity: 0.5; }
+  6.5% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+/* Hero app icon — large prominent display */
+.hero-app-icon {
+  width: clamp(140px, 18vw, 220px);
+  height: clamp(140px, 18vw, 220px);
+  margin: 0 auto 28px;
+  border-radius: clamp(28px, 3.6vw, 44px);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.45),
+              0 0 100px rgba(56, 189, 248, 0.25),
+              0 0 180px rgba(56, 189, 248, 0.1);
+  position: relative;
+  animation: hero-icon-float 6s ease-in-out infinite;
+}
+.hero-app-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-app-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+@keyframes hero-icon-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Hero brand — large WeatherNavigator wordmark */
+.hero-brand {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+/* Tagline — smaller than the brand */
+.hero-tagline {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 28px;
+}
+.hero-tagline .line-2 {
+  display: block;
+  font-weight: 400;
+  font-size: 0.7em;
+  color: var(--gray-300);
+  margin-top: 8px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--sky-300);
+  margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+}
+.hero-badge .pulse {
+  width: 8px; height: 8px;
+  background: var(--green-400);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+.hero h1 {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  margin-bottom: 28px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.hero h1 .line-2 {
+  display: block;
+  font-weight: 400;
+  font-size: 0.55em;
+  color: var(--gray-300);
+  margin-top: 12px;
+  letter-spacing: -0.01em;
+}
+.hero-description {
+  font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+  color: var(--gray-400);
+  line-height: 1.7;
+  max-width: 680px;
+  margin: 0 auto 48px;
+  font-weight: 300;
+}
+.hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--blue-500), var(--sky-400));
+  color: var(--white);
+  padding: 16px 36px; border-radius: 100px;
+  font-size: 1.05rem; font-weight: 600;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.btn-primary:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4); }
+.btn-primary svg { width: 20px; height: 20px; }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--white);
+  padding: 16px 36px; border-radius: 100px;
+  font-size: 1.05rem; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
+}
+.btn-secondary:hover { transform: translateY(-2px); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); }
+.btn-secondary svg { width: 20px; height: 20px; }
+
+.scroll-indicator {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--gray-500); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  animation: float 3s ease-in-out infinite;
+}
+.scroll-indicator .mouse {
+  width: 24px; height: 38px;
+  border: 2px solid var(--gray-500);
+  border-radius: 12px; position: relative;
+}
+.scroll-indicator .mouse::after {
+  content: '';
+  position: absolute; top: 8px; left: 50%;
+  transform: translateX(-50%);
+  width: 3px; height: 8px;
+  background: var(--gray-500); border-radius: 2px;
+  animation: scroll-dot 2s ease-in-out infinite;
+}
+@keyframes scroll-dot {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  50% { transform: translateX(-50%) translateY(8px); opacity: 0.3; }
+}
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* ===== PROBLEM SECTION ===== */
+.problem-section {
+  padding: var(--section-padding) 0;
+  background: linear-gradient(180deg, var(--blue-900) 0%, var(--blue-800) 100%);
+  position: relative;
+}
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.problem-visual { position: relative; }
+.app-comparison { display: flex; flex-direction: column; gap: 16px; }
+.app-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 16px; backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+.app-row:hover { transform: translateX(8px); }
+.app-row .icon-circle { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.app-row .icon-circle svg { width: 24px; height: 24px; }
+.app-row .app-info { flex: 1; }
+.app-row .app-name { font-weight: 600; font-size: 0.95rem; }
+.app-row .app-desc { font-size: 0.85rem; color: var(--gray-400); margin-top: 2px; }
+.app-row .app-gap { color: var(--red-500); font-size: 0.8rem; font-weight: 500; }
+.app-row.highlight {
+  border-color: var(--blue-400);
+  background: rgba(37, 99, 235, 0.1);
+  position: relative; overflow: hidden;
+}
+.app-row.highlight::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(to bottom, var(--blue-400), var(--sky-400));
+  border-radius: 4px 0 0 4px;
+}
+.stat-callout {
+  margin-top: 32px; padding: 28px 32px;
+  background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(249,115,22,0.1));
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 16px; text-align: center;
+}
+.stat-callout .stat-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5rem; font-weight: 800; color: var(--red-500); display: block;
+}
+.stat-callout .stat-label { font-size: 0.95rem; color: var(--gray-300); margin-top: 4px; }
+
+/* ===== SOLUTION SECTION ===== */
+.solution-section {
+  padding: var(--section-padding) 0;
+  position: relative;
+  background: linear-gradient(180deg, var(--blue-800) 0%, var(--blue-900) 100%);
+}
+.route-legend {
+  display: flex; gap: 0; margin: 48px auto;
+  border-radius: 16px; overflow: hidden; max-width: 700px;
+}
+.legend-item {
+  flex: 1; padding: 24px 20px; text-align: center;
+  transition: transform 0.3s ease; position: relative;
+}
+.legend-item:hover { transform: scale(1.05); z-index: 1; }
+.legend-item.green { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); }
+.legend-item.blue { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); }
+.legend-item.orange { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3); }
+.legend-item.red { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; margin: 0 auto 10px; }
+.legend-item.green .legend-dot { background: var(--green-500); box-shadow: 0 0 12px rgba(34,197,94,0.5); }
+.legend-item.blue .legend-dot { background: var(--blue-400); box-shadow: 0 0 12px rgba(59,130,246,0.5); }
+.legend-item.orange .legend-dot { background: var(--orange-500); box-shadow: 0 0 12px rgba(249,115,22,0.5); }
+.legend-item.red .legend-dot { background: var(--red-500); box-shadow: 0 0 12px rgba(239,68,68,0.5); }
+.legend-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+.legend-desc { font-size: 0.78rem; color: var(--gray-400); }
+
+.route-visual { position: relative; height: 120px; margin: 40px auto; max-width: 700px; }
+.route-line {
+  position: absolute; top: 50%; left: 0; right: 0;
+  height: 6px; border-radius: 3px;
+  background: linear-gradient(90deg,
+    var(--green-500) 0%, var(--green-500) 30%,
+    var(--blue-400) 30%, var(--blue-400) 50%,
+    var(--orange-500) 50%, var(--orange-500) 70%,
+    var(--green-500) 70%, var(--green-500) 100%);
+  transform: translateY(-50%);
+}
+.route-car { position: absolute; top: 50%; transform: translateY(-50%); animation: drive 8s ease-in-out infinite; }
+@keyframes drive { 0% { left: 0%; } 100% { left: 92%; } }
+.route-car svg { width: 32px; height: 32px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+
+/* ===== SKYE SECTION ===== */
+.skye-section {
+  padding: var(--section-padding) 0;
+  background: var(--blue-900);
+  position: relative; overflow: hidden;
+}
+.skye-section::before {
+  content: '';
+  position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.skye-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.skye-avatar { display: flex; justify-content: center; align-items: center; }
+.skye-avatar-circle {
+  width: 280px; height: 280px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(56,189,248,0.2));
+  border: 2px solid rgba(56,189,248,0.3);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; animation: skye-glow 4s ease-in-out infinite;
+}
+@keyframes skye-glow {
+  0%, 100% { box-shadow: 0 0 40px rgba(56,189,248,0.1); }
+  50% { box-shadow: 0 0 80px rgba(56,189,248,0.2); }
+}
+.skye-avatar-circle svg { width: 160px; height: 160px; }
+
+/* Orbiting dots - 4 dots matching weather forecast colours */
+.orbit-ring {
+  position: absolute;
+  width: 340px; height: 340px;
+  border: 1px dashed rgba(56,189,248,0.15);
+  border-radius: 50%;
+  animation: orbit 20s linear infinite;
+}
+.orbit-dot {
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+/* Green = Clear (top) */
+.orbit-dot:nth-child(1) { background: var(--green-400); color: var(--green-400); top: -6px; left: 50%; transform: translateX(-50%); }
+/* Blue = Mild (right) */
+.orbit-dot:nth-child(2) { background: var(--blue-400); color: var(--blue-400); top: 50%; right: -6px; transform: translateY(-50%); }
+/* Orange = Moderate (bottom) */
+.orbit-dot:nth-child(3) { background: var(--orange-500); color: var(--orange-500); bottom: -6px; left: 50%; transform: translateX(-50%); }
+/* Red = Severe (left) */
+.orbit-dot:nth-child(4) { background: var(--red-500); color: var(--red-500); top: 50%; left: -6px; transform: translateY(-50%); }
+
+@keyframes orbit { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.skye-quotes { display: flex; flex-direction: column; gap: 20px; }
+.skye-quote {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 20px 24px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 16px; backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.skye-quote:hover { transform: translateX(8px); border-color: rgba(56,189,248,0.3); }
+.quote-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.quote-icon svg { width: 20px; height: 20px; }
+.quote-icon.blue { background: rgba(59,130,246,0.15); color: var(--blue-400); }
+.quote-icon.amber { background: rgba(251,191,36,0.15); color: var(--amber-400); }
+.quote-icon.green { background: rgba(34,197,94,0.15); color: var(--green-400); }
+.quote-icon.sky { background: rgba(56,189,248,0.15); color: var(--sky-400); }
+.quote-content { flex: 1; }
+.quote-label { font-size: 0.75rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.quote-text { font-size: 0.95rem; color: var(--gray-200); line-height: 1.6; font-style: italic; }
+
+/* ===== PIC CARD (image-only carousel cards) ===== */
+.pic-card {
+  width: 360px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  display: block !important;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.pic-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.pic-card::before { display: none !important; }
+
+/* Uniform card widths across all carousel types — matches the look of audience/testimonial sections */
+.agent-card.pic-card { width: 360px !important; }
+.flywheel-card.pic-card { width: 480px !important; }
+.audience-card.pic-card { width: 360px !important; }
+.testimonial-card.pic-card { width: 480px !important; }
+
+/* Moat + testimonial cards: text is baked into the image. Let the card
+   take the natural portrait aspect of the source image so nothing is
+   cropped and there is no letterboxing. */
+.flywheel-card.pic-card,
+.testimonial-card.pic-card {
+  background: transparent !important;
+  aspect-ratio: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+.flywheel-card.pic-card img,
+.testimonial-card.pic-card img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .agent-card.pic-card,
+  .audience-card.pic-card { width: 320px !important; }
+  .flywheel-card.pic-card,
+  .testimonial-card.pic-card { width: 435px !important; }
+}
+@media (max-width: 768px) {
+  .agent-card.pic-card,
+  .audience-card.pic-card { width: 280px !important; }
+  .flywheel-card.pic-card,
+  .testimonial-card.pic-card { width: 390px !important; }
+}
+@media (max-width: 480px) {
+  .agent-card.pic-card,
+  .audience-card.pic-card { width: 240px !important; }
+  .flywheel-card.pic-card,
+  .testimonial-card.pic-card { width: 330px !important; }
+}
+
+/* ===== CAROUSEL SYSTEM (stacked-center, à la Symbiotek) ===== */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 42vw, 480px);
+  margin: 0 auto;
+  padding: 20px 0;
+  overflow: visible;
+  perspective: 1200px;
+  /* JS computes stepX = active card width × --step-ratio */
+  --step-ratio: 0.78;
+}
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+.carousel-track.dragging { cursor: grabbing; }
+.carousel-track > * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0 !important;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s ease;
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.carousel-track.dragging > * { transition: none; }
+
+/* Override conflicting per-card rules (.agent-card / .flywheel-card define
+   position:relative and display:flex which break the stacked-center layout).
+   These selectors have higher specificity so they win regardless of order. */
+.carousel-track > .agent-card,
+.carousel-track > .flywheel-card,
+.carousel-track > .audience-card,
+.carousel-track > .testimonial-card {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  flex-direction: initial !important;
+}
+
+/* Controls — buttons centered below the carousel */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+.carousel-nav {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--white);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.carousel-nav:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.35);
+  transform: scale(1.05);
+}
+.carousel-nav:active { transform: scale(0.95); }
+.carousel-nav svg { width: 20px; height: 20px; }
+
+/* Carousel dots indicator (kept as positional affordance) */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.carousel-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gray-600);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.carousel-dot.active {
+  background: var(--sky-400);
+  transform: scale(1.3);
+}
+
+@media (max-width: 1024px) {
+  .carousel-wrapper { --step-ratio: 0.78; height: clamp(340px, 50vw, 420px); }
+}
+@media (max-width: 768px) {
+  .carousel-wrapper { --step-ratio: 0.72; height: clamp(300px, 60vw, 380px); }
+}
+@media (max-width: 480px) {
+  .carousel-wrapper { --step-ratio: 0.68; height: clamp(260px, 70vw, 320px); }
+}
+
+/* ===== AGENTS ARCHITECTURE ===== */
+.agents-section {
+  padding: var(--section-padding) 0;
+  background: linear-gradient(180deg, var(--blue-900) 0%, var(--blue-800) 50%, var(--blue-900) 100%);
+  position: relative;
+}
+.agents-section::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.orchestrator-hub { text-align: center; margin-bottom: 60px; }
+.hub-circle {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-500), var(--sky-400));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; position: relative;
+  box-shadow: 0 0 60px rgba(37,99,235,0.3);
+}
+.hub-circle svg { width: 60px; height: 60px; color: var(--white); }
+.hub-circle::after {
+  content: '';
+  position: absolute; inset: -8px;
+  border: 2px dashed rgba(56,189,248,0.2);
+  border-radius: 50%;
+  animation: orbit 15s linear infinite;
+}
+.hub-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem; font-weight: 600; color: var(--sky-300);
+}
+
+/* Agent cards in carousel */
+.agent-card {
+  width: 420px;
+  min-height: 360px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card background imagery */
+.agent-card-image {
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  flex-shrink: 0;
+}
+.agent-card-image .img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,22,40,0.2) 0%, rgba(10,22,40,0.85) 100%);
+  z-index: 1;
+}
+.agent-card-image .img-scene {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+
+/* Specific scene backgrounds (CSS-painted) */
+.scene-route-optimise {
+  background: linear-gradient(135deg, #0f4c75 0%, #1b6ca8 30%, #3282b8 60%, #bbe1fa 100%);
+}
+.scene-route-optimise::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+  background: linear-gradient(to top, #1a1a2e, transparent);
+}
+.scene-route-optimise::after {
+  content: '';
+  position: absolute; bottom: 20px; left: 10%; right: 10%; height: 4px;
+  background: linear-gradient(90deg, var(--green-500), var(--blue-400), var(--orange-500), var(--green-500));
+  border-radius: 2px; box-shadow: 0 0 10px rgba(56,189,248,0.5);
+}
+
+.scene-predictive {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+}
+.scene-predictive::before {
+  content: '';
+  position: absolute; top: 15%; left: 60%; width: 80px; height: 50px;
+  background: rgba(156,163,175,0.3); border-radius: 50% 50% 0 0;
+  box-shadow: -30px 10px 0 20px rgba(156,163,175,0.2), 20px 5px 0 15px rgba(156,163,175,0.25);
+}
+.scene-predictive::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+  background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(96,165,250,0.1) 8px, rgba(96,165,250,0.1) 10px);
+}
+
+.scene-fatigue {
+  background: linear-gradient(180deg, #1a1a2e 0%, #0d1b2a 60%, #1b263b 100%);
+}
+.scene-fatigue::before {
+  content: '';
+  position: absolute; top: 20%; right: 20%; width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(251,191,36,0.15);
+  box-shadow: 0 0 40px rgba(251,191,36,0.2), 0 0 80px rgba(251,191,36,0.1);
+}
+.scene-fatigue::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 30%;
+  background: linear-gradient(90deg, rgba(34,197,94,0.1), rgba(56,189,248,0.1));
+}
+
+.scene-local-knowledge {
+  background: linear-gradient(180deg, #2d3436 0%, #0d1b2a 100%);
+}
+.scene-local-knowledge::before {
+  content: '';
+  position: absolute; bottom: 15px; left: 15%; right: 15%; height: 3px;
+  background: var(--blue-400); border-radius: 2px; opacity: 0.5;
+}
+.scene-local-knowledge::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
+  background: linear-gradient(to top, rgba(59,130,246,0.15), transparent);
+}
+
+.scene-emergency {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1b1b 50%, #3d0000 100%);
+}
+.scene-emergency::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(239,68,68,0.3);
+  box-shadow: 0 0 30px rgba(239,68,68,0.4), 0 0 60px rgba(239,68,68,0.2);
+  animation: emergency-pulse 2s ease-in-out infinite;
+}
+@keyframes emergency-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+}
+
+.scene-calibration {
+  background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+}
+.scene-calibration::before {
+  content: '';
+  position: absolute; bottom: 20%; left: 10%; right: 10%; height: 2px;
+  background: linear-gradient(90deg, var(--red-500), var(--amber-400), var(--green-400));
+  opacity: 0.5;
+}
+
+.scene-journal {
+  background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
+}
+.scene-journal::before {
+  content: '';
+  position: absolute; top: 20%; left: 15%; width: 70%; height: 60%;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+}
+
+.scene-companion {
+  background: linear-gradient(135deg, #1b263b 0%, #16213e 50%, #0f3460 100%);
+}
+.scene-companion::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 120px; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--sky-400), transparent);
+}
+
+.scene-seasonal {
+  background: linear-gradient(180deg, #0f3460 0%, #e94560 100%);
+  opacity: 0.7;
+}
+
+.scene-accessibility {
+  background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+}
+.scene-accessibility::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 60px; height: 60px; border-radius: 50%;
+  border: 3px solid rgba(56,189,248,0.3);
+}
+
+.agent-card-body {
+  padding: 24px 28px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; border-radius: 20px 20px 0 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+.agent-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(37,99,235,0.15); border-color: rgba(255,255,255,0.2); }
+.agent-card:hover::before { opacity: 1; }
+.agent-card.core::before { background: linear-gradient(90deg, var(--blue-400), var(--sky-400)); }
+.agent-card.intel::before { background: linear-gradient(90deg, var(--amber-400), var(--orange-500)); }
+.agent-card.engage::before { background: linear-gradient(90deg, var(--green-400), var(--green-500)); }
+
+.agent-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+.agent-card.core .agent-number { background: rgba(59,130,246,0.15); color: var(--blue-400); }
+.agent-card.intel .agent-number { background: rgba(251,191,36,0.15); color: var(--amber-400); }
+.agent-card.engage .agent-number { background: rgba(34,197,94,0.15); color: var(--green-400); }
+
+.agent-card h4 { font-size: 1.15rem; margin-bottom: 8px; color: var(--white); }
+.agent-card .agent-tagline { font-size: 0.85rem; color: var(--sky-300); font-weight: 500; margin-bottom: 10px; font-style: italic; }
+.agent-card p { font-size: 0.88rem; color: var(--gray-400); line-height: 1.6; }
+
+.category-header {
+  text-align: center; margin: 60px 0 24px; position: relative;
+}
+.category-header::before {
+  content: '';
+  position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; background: var(--glass-border);
+}
+.category-header span {
+  position: relative;
+  background: var(--blue-800);
+  padding: 0 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600; font-size: 0.9rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.category-header.core span { color: var(--blue-300); }
+.category-header.intel span { color: var(--amber-400); }
+.category-header.engage span { color: var(--green-400); }
+
+/* ===== COMPETITIVE LANDSCAPE ===== */
+.competitive-section { padding: var(--section-padding) 0; background: var(--blue-900); }
+.comparison-table-wrapper {
+  overflow-x: auto; border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg); backdrop-filter: blur(20px);
+}
+.comparison-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.comparison-table thead { background: rgba(37,99,235,0.1); }
+.comparison-table th {
+  padding: 20px 24px; text-align: center;
+  font-weight: 600; color: var(--gray-300);
+  border-bottom: 1px solid var(--glass-border); white-space: nowrap;
+}
+.comparison-table th:first-child { text-align: left; }
+.comparison-table th.highlight-col { color: var(--sky-300); position: relative; }
+.comparison-table td {
+  padding: 16px 24px; text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--gray-400);
+}
+.comparison-table td:first-child { text-align: left; font-weight: 500; color: var(--gray-200); }
+.comparison-table td.highlight-col { background: rgba(37,99,235,0.05); }
+.comparison-table tr:last-child td { border-bottom: none; }
+.check-yes { color: var(--green-400); font-weight: 700; font-size: 1.1rem; }
+.check-no { color: var(--gray-600); font-size: 0.85rem; }
+.check-partial { color: var(--amber-400); font-size: 0.85rem; }
+
+/* ===== PRICING SECTION ===== */
+.pricing-section {
+  padding: var(--section-padding) 0;
+  background: linear-gradient(180deg, var(--blue-900) 0%, var(--blue-800) 100%);
+  position: relative;
+}
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
+.pricing-card {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 24px; padding: 40px 32px;
+  text-align: center; backdrop-filter: blur(20px);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+  position: relative;
+}
+.pricing-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(37,99,235,0.15); }
+.pricing-card.featured { border-color: var(--blue-400); background: rgba(37,99,235,0.08); transform: scale(1.05); }
+.pricing-card.featured:hover { transform: scale(1.05) translateY(-8px); }
+.pricing-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--blue-500), var(--sky-400));
+  color: var(--white); padding: 6px 20px; border-radius: 100px;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; white-space: nowrap;
+}
+.pricing-tier { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+.pricing-audience { font-size: 0.82rem; color: var(--gray-500); margin-bottom: 24px; font-style: italic; }
+.pricing-price { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 800; margin-bottom: 4px; }
+.pricing-price .currency { font-size: 1.2rem; vertical-align: super; }
+.pricing-price .period { font-size: 0.9rem; color: var(--gray-500); font-weight: 400; }
+.pricing-alt { font-size: 0.82rem; color: var(--gray-500); margin-bottom: 28px; }
+.pricing-features { list-style: none; text-align: left; margin-bottom: 32px; }
+.pricing-features li { padding: 8px 0; font-size: 0.88rem; color: var(--gray-300); display: flex; align-items: flex-start; gap: 10px; }
+.pricing-features li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; color: var(--green-400); }
+.pricing-cta {
+  display: block; width: 100%; padding: 14px 24px; border-radius: 100px;
+  font-weight: 600; font-size: 0.95rem; text-decoration: none;
+  text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer; border: none;
+}
+.pricing-cta.primary { background: linear-gradient(135deg, var(--blue-500), var(--sky-400)); color: var(--white); }
+.pricing-cta.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.4); }
+.pricing-cta.secondary { background: transparent; color: var(--gray-300); border: 1px solid var(--glass-border); }
+.pricing-cta.secondary:hover { background: var(--glass-bg); transform: translateY(-2px); }
+
+/* ===== MOAT / FLYWHEEL SECTION ===== */
+.moat-section { padding: var(--section-padding) 0; background: var(--blue-900); position: relative; }
+
+.flywheel-card {
+  width: 380px;
+  min-height: 280px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  position: relative; overflow: hidden;
+  transition: transform 0.4s ease, border-color 0.4s ease;
+  display: flex; flex-direction: column;
+}
+.flywheel-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.2); }
+
+.flywheel-card-image {
+  height: 140px; position: relative; overflow: hidden;
+  border-radius: 20px 20px 0 0; flex-shrink: 0;
+}
+.flywheel-card-image .img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,22,40,0.2) 0%, rgba(10,22,40,0.85) 100%);
+  z-index: 1;
+}
+.flywheel-card-image .img-scene { position: absolute; inset: 0; z-index: 0; }
+
+.scene-calibration-fw {
+  background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #0f3460 100%);
+}
+.scene-calibration-fw::before {
+  content: '';
+  position: absolute; bottom: 30%; left: 10%; right: 10%; height: 2px;
+  background: linear-gradient(90deg, var(--red-500), var(--amber-400), var(--green-400));
+  opacity: 0.6;
+}
+.scene-calibration-fw::after {
+  content: '';
+  position: absolute; bottom: 25%; left: 10%; right: 10%; height: 2px;
+  background: linear-gradient(90deg, var(--green-400), var(--green-400));
+  opacity: 0.3;
+}
+
+.scene-behavioural-fw {
+  background: linear-gradient(180deg, #16213e 0%, #1a1a2e 100%);
+}
+.scene-behavioural-fw::before {
+  content: '';
+  position: absolute; top: 40%; left: 20%; width: 60%; height: 40px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, rgba(56,189,248,0.1), rgba(56,189,248,0.2), rgba(56,189,248,0.05));
+}
+
+.scene-local-fw {
+  background: linear-gradient(180deg, #0d1b2a 0%, #2d3436 100%);
+}
+.scene-local-fw::before {
+  content: '';
+  position: absolute; inset: 15px;
+  background:
+    radial-gradient(circle at 25% 35%, rgba(239,68,68,0.25) 3px, transparent 3px),
+    radial-gradient(circle at 55% 55%, rgba(251,191,36,0.25) 3px, transparent 3px),
+    radial-gradient(circle at 75% 30%, rgba(239,68,68,0.2) 3px, transparent 3px),
+    radial-gradient(circle at 40% 75%, rgba(251,191,36,0.2) 3px, transparent 3px);
+}
+
+.flywheel-card-body {
+  padding: 20px 24px 24px; flex: 1;
+}
+.flywheel-card-body .fw-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--gray-500); margin-bottom: 8px;
+  letter-spacing: 0.1em;
+}
+.flywheel-card-body h4 { font-size: 1.1rem; margin-bottom: 8px; color: var(--white); }
+.flywheel-card-body p { font-size: 0.88rem; color: var(--gray-400); line-height: 1.6; }
+
+/* ===== TARGET AUDIENCE ===== */
+.audience-section { padding: var(--section-padding) 0; background: linear-gradient(180deg, var(--blue-900) 0%, var(--blue-800) 100%); }
+
+.audience-card {
+  width: 360px;
+  min-height: 300px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  transition: transform 0.4s ease;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.audience-card:hover { transform: translateY(-4px); }
+
+.audience-card-image {
+  height: 140px; position: relative; overflow: hidden;
+  border-radius: 20px 20px 0 0; flex-shrink: 0;
+}
+.audience-card-image .img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,22,40,0.15) 0%, rgba(10,22,40,0.85) 100%);
+  z-index: 1;
+}
+.audience-card-image .img-scene { position: absolute; inset: 0; z-index: 0; }
+
+.scene-commuter {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #3a6ea5 100%);
+}
+.scene-commuter::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 20px;
+  background: repeating-linear-gradient(90deg, var(--gray-600) 0, var(--gray-600) 40px, transparent 40px, transparent 60px);
+  opacity: 0.3;
+}
+
+.scene-roadtrip {
+  background: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 30%, #22c55e 70%, #166534 100%);
+  opacity: 0.6;
+}
+
+.scene-anxious {
+  background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+}
+.scene-anxious::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(96,165,250,0.05) 4px, rgba(96,165,250,0.05) 6px);
+}
+
+.scene-rural {
+  background: linear-gradient(180deg, #1f2937 0%, #064e3b 100%);
+}
+.scene-rural::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: var(--gray-600); opacity: 0.4;
+}
+
+.scene-professional {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+}
+
+.scene-parents {
+  background: linear-gradient(180deg, #1e3a5f 0%, #0d1b2a 100%);
+}
+.scene-parents::before {
+  content: '';
+  position: absolute; top: 30%; left: 50%; transform: translateX(-50%);
+  width: 60px; height: 60px; border-radius: 50%;
+  border: 2px solid rgba(56,189,248,0.2);
+}
+
+.audience-card-body {
+  padding: 20px 24px 24px; flex: 1;
+}
+.audience-card-body .audience-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px; background: rgba(56,189,248,0.1);
+}
+.audience-card-body .audience-icon svg { width: 20px; height: 20px; color: var(--sky-400); }
+.audience-card-body h4 { font-size: 1.05rem; margin-bottom: 6px; color: var(--white); }
+.audience-card-body .pain { font-size: 0.83rem; color: var(--gray-500); margin-bottom: 6px; }
+.audience-card-body .solve { font-size: 0.86rem; color: var(--sky-300); font-weight: 500; }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-section { padding: var(--section-padding) 0; background: var(--blue-900); }
+
+.testimonial-card {
+  width: 400px;
+  min-height: 240px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: transform 0.4s ease;
+  display: flex; flex-direction: column;
+}
+.testimonial-card:hover { transform: translateY(-4px); }
+
+.testimonial-card-image {
+  height: 120px; position: relative; overflow: hidden;
+  border-radius: 20px 20px 0 0; flex-shrink: 0;
+}
+.testimonial-card-image .img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,22,40,0.1) 0%, rgba(10,22,40,0.9) 100%);
+  z-index: 1;
+}
+.testimonial-card-image .img-scene { position: absolute; inset: 0; z-index: 0; }
+
+.scene-testimonial-1 {
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+}
+.scene-testimonial-2 {
+  background: linear-gradient(180deg, #374151 0%, #1a1a2e 60%);
+}
+.scene-testimonial-2::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(96,165,250,0.04) 3px, rgba(96,165,250,0.04) 5px);
+}
+.scene-testimonial-3 {
+  background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+}
+.scene-testimonial-3::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--green-500), var(--blue-400), var(--green-500));
+  opacity: 0.4;
+}
+
+.testimonial-card-body {
+  padding: 20px 24px 24px; flex: 1;
+}
+.testimonial-card-body .quote-mark {
+  font-size: 2rem; color: var(--blue-400); opacity: 0.5;
+  line-height: 1; margin-bottom: 8px; font-family: Georgia, serif;
+}
+.testimonial-card-body p { font-size: 0.95rem; color: var(--gray-300); line-height: 1.7; font-style: italic; }
+
+/* ===== TECH STACK ===== */
+.tech-section { padding: var(--section-padding) 0; background: linear-gradient(180deg, var(--blue-900) 0%, var(--blue-800) 100%); }
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; }
+.tech-item {
+  text-align: center; padding: 28px 20px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 16px; backdrop-filter: blur(20px);
+  transition: transform 0.3s ease;
+}
+.tech-item:hover { transform: translateY(-4px); }
+.tech-item svg { width: 36px; height: 36px; margin-bottom: 12px; opacity: 0.7; }
+.tech-item .tech-provider { font-weight: 600; font-size: 0.95rem; color: var(--white); margin-bottom: 4px; }
+.tech-item .tech-role { font-size: 0.8rem; color: var(--gray-500); }
+
+/* ===== FINAL CTA ===== */
+.cta-section {
+  padding: var(--section-padding) 0 calc(var(--section-padding) + 40px);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 1000px; height: 500px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(37,99,235,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section h2 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 20px; }
+.cta-section .tagline-final { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--gray-400); font-style: italic; margin-bottom: 40px; }
+
+/* ===== FOOTER ===== */
+.footer { background: var(--blue-800); border-top: 1px solid var(--glass-border); padding: 40px 0; text-align: center; }
+.footer p { color: var(--gray-500); font-size: 0.85rem; }
+.footer .footer-brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--gray-300); font-size: 1rem; margin-bottom: 8px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .problem-grid, .skye-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .pricing-card.featured { transform: none; order: -1; }
+  .pricing-card.featured:hover { transform: translateY(-8px); }
+  .agent-card { width: 360px; }
+  .flywheel-card { width: 340px; }
+  .audience-card { width: 320px; }
+  .testimonial-card { width: 340px; }
+}
+
+@media (max-width: 768px) {
+  .navbar-links { display: none; }
+  .mobile-menu-btn { display: block; }
+  .route-legend { flex-wrap: wrap; }
+  .legend-item { flex: 1 1 45%; }
+  .comparison-table { font-size: 0.8rem; }
+  .comparison-table th, .comparison-table td { padding: 12px 14px; }
+  .skye-avatar-circle { width: 200px; height: 200px; }
+  .skye-avatar-circle svg { width: 110px; height: 110px; }
+  .orbit-ring { width: 260px; height: 260px; }
+  .agent-card { width: 320px; min-height: 340px; }
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-sun { top: 40px; right: 30px; width: 70px; height: 70px; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.2rem; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .agent-card { width: 290px; }
+  .flywheel-card { width: 290px; }
+  .audience-card { width: 290px; }
+  .testimonial-card { width: 290px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Coming Soon banner — mirrors the Coming Soon state shown on
+     symbio-tek.com/app/weathernavigator. -->
+<div style="position:relative;z-index:100;width:100%;background:linear-gradient(135deg,#1a3f7a 0%,#2563eb 50%,#38bdf8 100%);color:#ffffff;text-align:center;padding:14px 18px;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:600;letter-spacing:0.4px;">
+  <div style="font-size:12px;text-transform:uppercase;letter-spacing:2px;opacity:0.9;">Coming Soon</div>
+  <div style="font-size:14px;margin-top:2px;font-weight:500;opacity:0.95;">
+    WeatherNavigator is in App Store review.
+    <a href="/app/weathernavigator" style="color:#ffffff;text-decoration:underline;">Back to symbio-tek.com</a>
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="#" class="navbar-brand">
+      <img src="/assets/weathernavigator-icon.png" alt="WeatherNavigator" style="width:36px;height:36px;border-radius:8px;">
+      <span>WeatherNavigator</span>
+    </a>
+    <ul class="navbar-links">
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#solution">Solution</a></li>
+      <li><a href="#skye">Meet Skye</a></li>
+      <li><a href="#agents">Agents</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#download" class="navbar-cta">Download</a></li>
+    </ul>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <!-- Sun glow -->
+  <div class="hero-sun"></div>
+  <!-- Weather container for rain, snow, lightning -->
+  <div class="hero-weather" id="heroWeather"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-app-icon reveal-scale">
+        <img src="/assets/weathernavigator-icon.png" alt="WeatherNavigator app icon">
+      </div>
+      <h1 class="hero-brand reveal stagger-1">
+        <span class="gradient-text">Weather</span><span style="color:var(--white);">Navigator</span>
+      </h1>
+      <div class="hero-badge reveal stagger-2">
+        <span class="pulse"></span>
+        The World's First AI Weather-Safe Driving Platform
+      </div>
+      <h2 class="hero-tagline reveal stagger-3">
+        <span class="gradient-text">Skye sees the storm</span>
+        <span class="line-2">before you do.</span>
+      </h2>
+      <p class="hero-description reveal stagger-4">
+        The only navigation app that shows you the weather along your entire route &mdash; at the time you'll actually be there. Your AI navigator guides you safely through it.
+      </p>
+      <div class="hero-buttons reveal stagger-5">
+        <a href="#download" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          Download Free
+        </a>
+        <a href="#solution" class="btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          See How It Works
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="mouse"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ===== THE PROBLEM ===== -->
+<section class="problem-section section-wrapper" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <div class="section-label reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          The Problem
+        </div>
+        <h2 class="section-title reveal stagger-1">Every navigation app tells you the <span class="gradient-text-warm">fastest</span> route. None tell you the <span class="gradient-text">safest.</span></h2>
+        <p class="section-subtitle reveal stagger-2">Drivers check one app for directions. Another for weather. Then guess what conditions they'll face 2 hours into a 6-hour drive.</p>
+        <div class="stat-callout reveal stagger-3">
+          <span class="stat-number">#1</span>
+          <span class="stat-label">Weather is the number one variable cause of road accidents</span>
+        </div>
+      </div>
+      <div class="problem-visual">
+        <div class="app-comparison">
+          <div class="app-row reveal stagger-1">
+            <div class="icon-circle" style="background:transparent;">
+              <svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gm1" x1="0" y1="0" x2="0" y2="48"><stop offset="0%" stop-color="#4caf50"/><stop offset="50%" stop-color="#4caf50"/><stop offset="50%" stop-color="#f44336"/><stop offset="100%" stop-color="#f44336"/></linearGradient></defs><rect width="48" height="48" rx="10" fill="#fff"/><path d="M24 6C14.06 6 6 14.06 6 24s8.06 18 18 18c4.97 0 9-1.5 12-4V24H28v6h5.4c-1.4 4-5.2 7-9.4 7-5.52 0-10-4.48-10-10s4.48-10 10-10c2.4 0 4.6.85 6.3 2.3l4.5-4.5C31.8 8.3 28.1 6 24 6z" fill="url(#gm1)"/><path d="M6 24c0-4.5 1.6-8.6 4.3-11.7L24 24z" fill="#fbbc04"/><path d="M24 42c4.5 0 8.6-1.6 11.7-4.3L24 24z" fill="#4285f4"/><circle cx="24" cy="24" r="5" fill="#4285f4"/></svg>
+            </div>
+            <div class="app-info"><div class="app-name">Google Maps</div><div class="app-desc">Optimises for time</div><div class="app-gap">No weather awareness</div></div>
+          </div>
+          <div class="app-row reveal stagger-2">
+            <div class="icon-circle" style="background:transparent;">
+              <svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="10" fill="#33ccff"/><ellipse cx="24" cy="22" rx="14" ry="13" fill="white"/><circle cx="19" cy="20" r="2.5" fill="#333"/><circle cx="29" cy="20" r="2.5" fill="#333"/><path d="M18 27c2 3 10 3 12 0" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="app-info"><div class="app-name">Waze</div><div class="app-desc">Optimises for traffic</div><div class="app-gap">No weather awareness</div></div>
+          </div>
+          <div class="app-row reveal stagger-3">
+            <div class="icon-circle" style="background:transparent;">
+              <svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="10" fill="#f5f5f7"/><path d="M10 34l10-18 8 12 5-6 5 12z" fill="#4caf50" opacity="0.8"/><path d="M10 34l7-12 6 8 5-7 10 11z" fill="#66bb6a"/><circle cx="30" cy="14" r="4" fill="#ff9800"/><path d="M24 38l-4-6h8z" fill="#1565c0"/></svg>
+            </div>
+            <div class="app-info"><div class="app-name">Apple Maps</div><div class="app-desc">Optimises for simplicity</div><div class="app-gap">No weather awareness</div></div>
+          </div>
+          <div class="app-row highlight reveal stagger-4">
+            <div class="icon-circle" style="background:transparent;">
+              <img src="/assets/weathernavigator-icon.png" alt="WeatherNavigator" style="width:48px;height:48px;border-radius:10px;">
+            </div>
+            <div class="app-info"><div class="app-name" style="color:var(--sky-300);">WeatherNavigator</div><div class="app-desc" style="color:var(--gray-300);">Optimises for weather safety</div><div class="app-gap" style="color:var(--green-400);">The only one that does</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE SOLUTION ===== -->
+<section class="solution-section section-wrapper" id="solution">
+  <div class="container">
+    <div class="section-label reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      The Solution
+    </div>
+    <h2 class="section-title reveal stagger-1">Your route isn't a blue line.<br>It's a <span class="gradient-text">colour-coded weather forecast.</span></h2>
+    <p class="section-subtitle reveal stagger-2">See exactly what weather you'll encounter, when you'll encounter it, and let Skye guide you through it safely.</p>
+    <div class="route-visual reveal stagger-3">
+      <div class="route-line"></div>
+      <div class="route-car">
+        <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="12" width="24" height="10" rx="3" fill="#3b82f6"/><rect x="8" y="8" width="16" height="8" rx="2" fill="#60a5fa"/><circle cx="10" cy="24" r="3" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1"/><circle cx="22" cy="24" r="3" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1"/><rect x="20" y="14" width="6" height="3" rx="1" fill="white" opacity="0.4"/></svg>
+      </div>
+    </div>
+    <div class="route-legend reveal stagger-4">
+      <div class="legend-item green"><div class="legend-dot"></div><div class="legend-label">Green</div><div class="legend-desc">Clear conditions</div></div>
+      <div class="legend-item blue"><div class="legend-dot"></div><div class="legend-label">Blue</div><div class="legend-desc">Mild weather</div></div>
+      <div class="legend-item orange"><div class="legend-dot"></div><div class="legend-label">Orange</div><div class="legend-desc">Moderate hazards</div></div>
+      <div class="legend-item red"><div class="legend-dot"></div><div class="legend-label">Red</div><div class="legend-desc">Severe — reroute</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MEET SKYE ===== -->
+<section class="skye-section section-wrapper" id="skye">
+  <div class="container">
+    <div class="skye-hero-grid">
+      <div class="skye-avatar reveal-scale">
+        <div class="skye-avatar-circle" style="background:transparent;border:none;">
+          <img src="/assets/skye-icon.png" alt="Skye AI Navigator" style="width:260px;height:260px;border-radius:50%;object-fit:contain;">
+          <div class="orbit-ring">
+            <div class="orbit-dot"></div>
+            <div class="orbit-dot"></div>
+            <div class="orbit-dot"></div>
+            <div class="orbit-dot"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Your Weather Based AI-Navigator
+        </div>
+        <h2 class="section-title reveal stagger-1">Meet <span class="gradient-text">Skye</span></h2>
+        <p class="section-subtitle reveal stagger-2" style="margin-bottom:32px;">A calm, confident AI voice that doesn't just show you the weather &mdash; she navigates you <em>through</em> it.</p>
+        <div class="skye-quotes">
+          <div class="skye-quote reveal stagger-3">
+            <div class="quote-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+            <div class="quote-content"><div class="quote-label">Pre-Drive Briefing</div><div class="quote-text">"Clear skies for the first hour, heavy rain near Coffs Harbour in about 3 hours."</div></div>
+          </div>
+          <div class="skye-quote reveal stagger-4">
+            <div class="quote-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="quote-content"><div class="quote-label">Mid-Drive Warning</div><div class="quote-text">"Heavy rain starting in 12 minutes. Visibility will drop &mdash; I'd slow to 80."</div></div>
+          </div>
+          <div class="skye-quote reveal stagger-5">
+            <div class="quote-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 18.5A2.5 2.5 0 109.5 16M12 18.5V22M12 18.5a2.5 2.5 0 002.5-2.5"/><path d="M12 2v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M2 12h4"/></svg></div>
+            <div class="quote-content"><div class="quote-label">Hands-Free Q&A</div><div class="quote-text">"Hey Skye, how long will this rain last?"</div></div>
+          </div>
+          <div class="skye-quote reveal stagger-6">
+            <div class="quote-icon sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 12H8M12 8v8"/></svg></div>
+            <div class="quote-content"><div class="quote-label">Smart Rerouting</div><div class="quote-text">"There's a safer route &mdash; 8 extra minutes, but you'll avoid a 25mm/hr downpour."</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AGENT ARCHITECTURE ===== -->
+<section class="agents-section section-wrapper" id="agents">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        The Intelligence
+      </div>
+      <h2 class="section-title reveal stagger-1">12 specialised agents.<br><span class="gradient-text">One calm voice.</span></h2>
+      <p class="section-subtitle reveal stagger-2" style="margin:0 auto 48px;">Each agent has a single job. Together, they form the most comprehensive driving intelligence platform ever built.</p>
+    </div>
+
+    <div class="orchestrator-hub reveal-scale">
+      <div class="hub-circle" style="background:transparent;box-shadow:none;">
+        <img src="/assets/skye-icon.png" alt="Skye Orchestrator" style="width:120px;height:120px;border-radius:50%;object-fit:contain;">
+      </div>
+      <div class="hub-label">Skye Orchestrator</div>
+    </div>
+
+    <!-- Core Agents Carousel -->
+    <div class="category-header core reveal"><span>Core Agents — What Makes Us Unbeatable</span></div>
+    <div class="carousel-wrapper reveal stagger-1" data-carousel="core">
+      <div class="carousel-track">
+        <div class="agent-card core pic-card"><img src="/weathernavigator/card_templates/agent_01_route_weather_optimiser_Pic01.jpg" alt="Route Weather Optimiser" loading="lazy"></div>
+        <div class="agent-card core pic-card"><img src="/weathernavigator/card_templates/agent_02_predictive_weather_intercept_Pic01.png" alt="Predictive Weather Intercept" loading="lazy"></div>
+        <div class="agent-card core pic-card"><img src="/weathernavigator/card_templates/agent_03_fatigue_monitor_Pic01.png" alt="Fatigue Monitor" loading="lazy"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="carousel-nav next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="carousel-dots"></div>
+    </div>
+
+    <!-- Intelligence Agents Carousel -->
+    <div class="category-header intel reveal"><span>Intelligence Agents — The Compounding Moat</span></div>
+    <div class="carousel-wrapper reveal stagger-1" data-carousel="intel">
+      <div class="carousel-track">
+        <div class="agent-card intel pic-card"><img src="/weathernavigator/card_templates/agent_04_local_knowledge_Pic01.png" alt="Local Knowledge" loading="lazy"></div>
+        <div class="agent-card intel pic-card"><img src="/weathernavigator/card_templates/agent_05_emergency_response_Pic01.png" alt="Emergency Response" loading="lazy"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="carousel-nav next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="carousel-dots"></div>
+    </div>
+
+    <!-- Engagement Agents Carousel -->
+    <div class="category-header engage reveal"><span>Engagement & Retention Agents</span></div>
+    <div class="carousel-wrapper reveal stagger-1" data-carousel="engage">
+      <div class="carousel-track">
+        <div class="agent-card engage pic-card"><img src="/weathernavigator/card_templates/agent_07_trip_journal_Pic01.png" alt="Trip Journal" loading="lazy"></div>
+        <div class="agent-card engage pic-card"><img src="/weathernavigator/card_templates/agent_08_companion_chat_Pic01.png" alt="Companion Chat" loading="lazy"></div>
+        <div class="agent-card engage pic-card"><img src="/weathernavigator/card_templates/agent_09_seasonal_intelligence_pic01.png" alt="Seasonal Intelligence" loading="lazy"></div>
+        <div class="agent-card engage pic-card"><img src="/weathernavigator/card_templates/agent_10_self_calibration_Pic01.png" alt="Self-Calibration Engine" loading="lazy"></div>
+        <div class="agent-card engage pic-card"><img src="/weathernavigator/card_templates/audience_07_vision-impaired-persons.png" alt="World-First CVD-Safe Weather Maps" loading="lazy"></div>
+        <div class="agent-card engage pic-card"><img src="/weathernavigator/card_templates/agent_12_accessibility_profiles_Pic01.png" alt="Accessibility Profiles" loading="lazy"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="carousel-nav next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COLOUR VISION SAFE MODE — WORLD FIRST ===== -->
+<section class="section-wrapper" id="colour-vision" style="padding-bottom:0;">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Accessibility Innovation
+      </div>
+      <h2 class="section-title reveal stagger-1">A world first in weather navigation.<br><span class="gradient-text">Colour Vision Safe Mode.</span></h2>
+      <p class="section-subtitle reveal stagger-2" style="max-width:700px;margin:16px auto 0;">
+        8% of men have colour vision deficiency. Standard weather maps use red-green colour ramps that make precipitation, temperature, and route severity indistinguishable. WeatherNavigator is the first weather navigation app to offer a research-backed CVD-safe colour palette — designed using the principles of
+        <em>Jenny, B. &amp; Kelso, N.V. (2007) "Color design for the Color Vision Impaired", Cartographic Perspectives 58, pp.61–67.</em>
+      </p>
+    </div>
+    <div class="reveal stagger-3" style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;margin-top:40px;max-width:900px;margin-left:auto;margin-right:auto;">
+      <div style="flex:1;min-width:280px;background:var(--gray-800);border-radius:16px;padding:28px;border:1px solid var(--gray-700);">
+        <h4 style="margin:0 0 12px;font-size:1.1em;">Standard palette</h4>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(77,176,71);"></div>
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(64,144,218);"></div>
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(230,158,51);"></div>
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(217,61,61);"></div>
+        </div>
+        <p style="margin:0;font-size:0.85em;color:var(--gray-400);">Clear &bull; Mild &bull; Moderate &bull; Severe</p>
+        <p style="margin:8px 0 0;font-size:0.8em;color:var(--gray-500);">Green and red appear nearly identical to people with deuteranopia or protanopia.</p>
+      </div>
+      <div style="flex:1;min-width:280px;background:var(--gray-800);border-radius:16px;padding:28px;border:1px solid var(--cyan-400);box-shadow:0 0 20px rgba(0,210,255,0.08);">
+        <h4 style="margin:0 0 12px;font-size:1.1em;">CVD-safe palette <span style="font-size:0.7em;color:var(--cyan-400);vertical-align:middle;">WORLD FIRST</span></h4>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(102,166,230);"></div>
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(51,102,191);"></div>
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(242,217,38);"></div>
+          <div style="width:40px;height:24px;border-radius:6px;background:rgb(153,38,89);"></div>
+        </div>
+        <p style="margin:0;font-size:0.85em;color:var(--gray-400);">Clear &bull; Mild &bull; Moderate &bull; Severe</p>
+        <p style="margin:8px 0 0;font-size:0.8em;color:var(--gray-500);">Blue → yellow → dark red. No green. Discriminable by lightness alone — works for all CVD types.</p>
+      </div>
+    </div>
+    <p class="reveal stagger-4" style="text-align:center;margin-top:24px;font-size:0.85em;color:var(--gray-500);">
+      Applied across all weather layers, route severity, alert banners, precipitation radar, temperature maps, and timeline displays.
+    </p>
+  </div>
+</section>
+
+<!-- ===== COMPETITIVE LANDSCAPE ===== -->
+<section class="competitive-section section-wrapper" id="competitive">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Competitive Landscape
+      </div>
+      <h2 class="section-title reveal stagger-1">WeatherNavigator doesn't compete<br>with Google Maps. <span class="gradient-text">It does what Google Maps, Waze and Apple Maps can't.</span></h2>
+    </div>
+    <div class="comparison-table-wrapper reveal stagger-2" style="margin-top:48px;">
+      <table class="comparison-table">
+        <thead><tr><th>Capability</th><th>Google Maps</th><th>Waze</th><th>Apple Maps</th><th class="highlight-col">WeatherNavigator</th></tr></thead>
+        <tbody>
+          <tr><td>Weather-optimised routing</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Predictive weather intercept</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Fatigue monitoring</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Local weather hazards</td><td class="check-no">&mdash;</td><td class="check-partial">Generic</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Emergency weather guidance</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Trip weather journal</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Forecast self-calibration</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Accessibility profiles</td><td class="check-partial">Basic</td><td class="check-partial">Basic</td><td class="check-partial">General</td><td class="highlight-col check-yes">&#10003;</td></tr>
+          <tr><td>Colour vision safe weather maps</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="check-no">&mdash;</td><td class="highlight-col check-yes">&#10003; <em style="font-size:0.75em;color:var(--cyan-400);">World first</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing-section section-wrapper" id="pricing">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Pricing
+      </div>
+      <h2 class="section-title reveal stagger-1">Start with a <span class="gradient-text">free 7-day trial.</span><br>No credit card required.</h2>
+    </div>
+    <div class="pricing-grid" style="margin-top:48px;">
+      <div class="pricing-card reveal stagger-1">
+        <div class="pricing-tier">Plus</div>
+        <div class="pricing-audience">Daily commuters & occasional road trippers</div>
+        <div class="pricing-price"><span class="currency">$</span>4.99<span class="period">/mo</span></div>
+        <div class="pricing-alt">$34.99/yr &middot; $119.99 lifetime</div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Skye AI voice briefings & Q&A</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>"Hey Skye" wake word, hands-free</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Colour-coded weather route overlay</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>6 live weather map layers + traffic</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Best time to leave optimisation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>CarPlay support</li>
+        </ul>
+        <a href="#" class="pricing-cta secondary">Get Started</a>
+      </div>
+      <div class="pricing-card featured reveal stagger-2">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-tier">Pro</div>
+        <div class="pricing-audience">Frequent road trippers & weather-anxious drivers</div>
+        <div class="pricing-price"><span class="currency">$</span>9.99<span class="period">/mo</span></div>
+        <div class="pricing-alt">$69.99/yr &middot; $249.99 lifetime</div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Plus</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Route Weather Optimiser</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Predictive Weather Intercept</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Fatigue Monitor</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Local Knowledge hazards</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Emergency Response agent</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Trip Journal</li>
+        </ul>
+        <a href="#" class="pricing-cta primary">Start Free Trial</a>
+      </div>
+      <div class="pricing-card reveal stagger-3">
+        <div class="pricing-tier">Ultra</div>
+        <div class="pricing-audience">Professional drivers & power users</div>
+        <div class="pricing-price"><span class="currency">$</span>14.99<span class="period">/mo</span></div>
+        <div class="pricing-alt">$99.99/yr</div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Pro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Companion Chat</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Accessibility profiles</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Colour Vision Safe Mode</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority processing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Early access to new agents</li>
+        </ul>
+        <a href="#" class="pricing-cta secondary">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPOUNDING MOAT ===== -->
+<section class="moat-section section-wrapper" id="moat">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        The Compounding Moat
+      </div>
+      <h2 class="section-title reveal stagger-1">WeatherNavigator's advantage<br><span class="gradient-text">deepens with every trip and every user.</span></h2>
+      <p class="section-subtitle reveal stagger-2" style="margin:0 auto;">A competitor can't replicate this by adding a weather layer to an existing maps app. These are compounding advantages built on data that only exists inside WeatherNavigator.</p>
+    </div>
+    <div class="carousel-wrapper reveal stagger-3" data-carousel="moat">
+      <div class="carousel-track">
+        <div class="flywheel-card pic-card"><img src="/weathernavigator/card_templates/moat_01_calibration_agent_Pic01.png" alt="Calibration Agent" loading="lazy"></div>
+        <div class="flywheel-card pic-card"><img src="/weathernavigator/card_templates/moat_02_behavioural_agent_Pic01.png" alt="Behavioural Agent" loading="lazy"></div>
+        <div class="flywheel-card pic-card"><img src="/weathernavigator/card_templates/moat_03_local_knowledge_Pic01.png" alt="Local Knowledge" loading="lazy"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="carousel-nav next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TARGET AUDIENCE ===== -->
+<section class="audience-section section-wrapper" id="audience">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Who It's For
+      </div>
+      <h2 class="section-title reveal stagger-1">Built for every driver who's<br><span class="gradient-text">ever been caught in a storm.</span></h2>
+    </div>
+    <div class="carousel-wrapper reveal stagger-2" data-carousel="audience" style="margin-top:32px;">
+      <div class="carousel-track">
+        <div class="audience-card pic-card"><img src="/weathernavigator/card_templates/audience_01_daily_commuters_Pic01.png" alt="Daily Commuters" loading="lazy"></div>
+        <div class="audience-card pic-card"><img src="/weathernavigator/card_templates/audience_02_road_trippers_Pic01.png" alt="Road Trippers" loading="lazy"></div>
+        <div class="audience-card pic-card"><img src="/weathernavigator/card_templates/audience_03_anxious_drivers_Pic01.png" alt="Anxious Weather Drivers" loading="lazy"></div>
+        <div class="audience-card pic-card"><img src="/weathernavigator/card_templates/audience_04_regional_rural_Pic01.png" alt="Regional & Rural Drivers" loading="lazy"></div>
+        <div class="audience-card pic-card"><img src="/weathernavigator/card_templates/audience_05_professional_drivers_Pic01.png" alt="Professional Drivers" loading="lazy"></div>
+        <div class="audience-card pic-card"><img src="/weathernavigator/card_templates/audience_06_parents_new_drivers_Pic01.png" alt="Parents of New Drivers" loading="lazy"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="carousel-nav next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials-section section-wrapper" id="testimonials">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        What Drivers Say
+      </div>
+      <h2 class="section-title reveal stagger-1"><span class="gradient-text">Real stories</span> from real roads.</h2>
+    </div>
+    <div class="carousel-wrapper reveal stagger-2" data-carousel="testimonials" style="margin-top:32px;">
+      <div class="carousel-track">
+        <div class="testimonial-card pic-card"><img src="/weathernavigator/card_templates/testimonial_01_Pic01.png" alt="Testimonial 1" loading="lazy"></div>
+        <div class="testimonial-card pic-card"><img src="/weathernavigator/card_templates/testimonial_02_Pic01.png" alt="Testimonial 2" loading="lazy"></div>
+        <div class="testimonial-card pic-card"><img src="/weathernavigator/card_templates/testimonial_03_Pic01.png" alt="Testimonial 3" loading="lazy"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-nav prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="carousel-nav next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TECH STACK ===== -->
+<section class="tech-section section-wrapper" id="tech">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label reveal" style="justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Built On
+      </div>
+      <h2 class="section-title reveal stagger-1">Powered by <span class="gradient-text">world-class technology.</span></h2>
+    </div>
+    <div class="tech-grid" style="margin-top:48px;">
+      <div class="tech-item reveal stagger-1">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#D97757"/><path d="M26.2 10H20.5L13.8 30h5.1l1.3-4.2h7.6L29.1 30h5.1L26.2 10zM21.3 22l2.6-8.4L26.5 22H21.3z" fill="white" transform="translate(-3,0) scale(0.85)"/></svg>
+        <div class="tech-provider">Anthropic</div><div class="tech-role">AI Intelligence</div>
+      </div>
+      <div class="tech-item reveal stagger-2">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#fff"/><path d="M20 5C13 5 7 11 7 18c0 5 3 9 7 11.5L20 35l6-5.5c4-2.5 7-6.5 7-11.5C33 11 27 5 20 5z" fill="#ea4335"/><path d="M20 5C13 5 7 11 7 18c0 5 3 9 7 11.5L20 18z" fill="#fbbc04"/><path d="M20 18l-6 11.5c2 1.3 4 2 6 2s4-.7 6-2L20 18z" fill="#34a853"/><path d="M20 18l6 11.5c4-2.5 7-6.5 7-11.5 0-3-1-5.5-2.5-7.5L20 18z" fill="#4285f4"/><circle cx="20" cy="18" r="5" fill="white"/></svg>
+        <div class="tech-provider">Google Maps Platform</div><div class="tech-role">Mapping & Routing</div>
+      </div>
+      <div class="tech-item reveal stagger-3">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#1a1a2e"/><path d="M20 8C14 8 10 12 10 17C6 17 3 20 3 24s3 7 7 7h20c4 0 7-3 7-7s-3-7-7-7c0-5-4-9-10-9Z" fill="#60a5fa" opacity="0.8"/><path d="M16 22v5M20 19v8M24 21v6" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="tech-provider">Open-Meteo & WeatherKit</div><div class="tech-role">Weather Data</div>
+      </div>
+      <div class="tech-item reveal stagger-4">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#333"/><path d="M20 6c-7.7 0-14 6.3-14 14s6.3 14 14 14 14-6.3 14-14S27.7 6 20 6z" fill="none" stroke="#999" stroke-width="1"/><path d="M10 20h4l2-5 3 10 3-8 2 3h6" stroke="#34c759" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="tech-provider">Apple Speech &amp; AVSpeech</div><div class="tech-role">Voice</div>
+      </div>
+      <div class="tech-item reveal stagger-5">
+        <svg viewBox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="#000"/><path d="M28 10.5c-.5.7-1.3 1.2-2 1.2-.8 0-1.5-.6-2.5-.6-1.3 0-2.6.8-3.3 2.2-1.4 2.7-.4 6.8 1 9 .7 1.1 1.6 2.3 2.7 2.3 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 2-1.1 2.7-2.2.5-.8.9-1.6 1.1-2-.1 0-2.1-.8-2.1-3.2 0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.5-2.9-1.6zM25.5 7c.6-.7 1.6-1.2 2.4-1.3.1 1-.3 2-1 2.7-.6.7-1.5 1.2-2.4 1.2-.1-1 .4-1.9 1-2.6z" fill="white"/><path d="M8 30l4-4M8 30h4M8 30v-4" stroke="#007aff" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="tech-provider">iOS &amp; CarPlay</div><div class="tech-role">Platform</div>
+      </div>
+      <div class="tech-item reveal stagger-6">
+        <svg viewBox="0 0 40 28" width="40" height="28" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;">
+          <!-- Australian Flag -->
+          <rect width="40" height="28" fill="#00008B"/>
+          <!-- Union Jack (simplified) -->
+          <rect x="0" y="0" width="20" height="14" fill="#00008B"/>
+          <path d="M0 0L20 14M20 0L0 14" stroke="white" stroke-width="2.5"/>
+          <path d="M0 0L20 14M20 0L0 14" stroke="#C8102E" stroke-width="1.2"/>
+          <line x1="10" y1="0" x2="10" y2="14" stroke="white" stroke-width="3"/>
+          <line x1="0" y1="7" x2="20" y2="7" stroke="white" stroke-width="3"/>
+          <line x1="10" y1="0" x2="10" y2="14" stroke="#C8102E" stroke-width="1.5"/>
+          <line x1="0" y1="7" x2="20" y2="7" stroke="#C8102E" stroke-width="1.5"/>
+          <!-- Commonwealth Star -->
+          <polygon points="10,17 10.8,19.5 13.3,19.5 11.3,21 12,23.5 10,22 8,23.5 8.7,21 6.7,19.5 9.2,19.5" fill="white"/>
+          <!-- Southern Cross -->
+          <polygon points="32,5 32.4,6.2 33.7,6.2 32.6,7 33,8.2 32,7.4 31,8.2 31.4,7 30.3,6.2 31.6,6.2" fill="white"/>
+          <polygon points="36,10 36.4,11.2 37.7,11.2 36.6,12 37,13.2 36,12.4 35,13.2 35.4,12 34.3,11.2 35.6,11.2" fill="white"/>
+          <polygon points="32,16 32.4,17.2 33.7,17.2 32.6,18 33,19.2 32,18.4 31,19.2 31.4,18 30.3,17.2 31.6,17.2" fill="white"/>
+          <polygon points="28,11 28.4,12.2 29.7,12.2 28.6,13 29,14.2 28,13.4 27,14.2 27.4,13 26.3,12.2 27.6,12.2" fill="white"/>
+          <circle cx="34" cy="13.5" r="0.6" fill="white"/>
+        </svg>
+        <div class="tech-provider">Australia-first</div><div class="tech-role">Global Expansion</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="cta-section section-wrapper" id="download">
+  <div class="container">
+    <h2 class="section-title reveal">
+      <span class="gradient-text-orange">Google Maps</span> shows you the fastest route.<br>
+      <span class="gradient-text-orange">Waze</span> shows you the traffic.<br>
+      <span class="gradient-text">WeatherNavigator</span> shows you the weather<br>
+      &mdash; and navigates you safely through it.
+    </h2>
+    <p class="tagline-final reveal stagger-1">Because the sky is not just scenery &mdash; it's information.</p>
+    <div class="hero-buttons reveal stagger-2" style="margin-top:40px;">
+      <a href="#" class="btn-primary" style="font-size:1.15rem; padding:18px 44px;">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-brand">WeatherNavigator</div>
+    <p>&copy; 2026 Symbio-Tek. All rights reserved.</p>
+    <p style="margin-top:8px; font-size:0.8rem; color:var(--gray-600);">AI Weather-Safe Navigation &middot; iOS &middot; CarPlay</p>
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ---- Scroll Reveal ----
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ---- Section fade-on-exit ----
+  const sections = document.querySelectorAll('.section-wrapper');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.intersectionRatio < 0.15 && entry.boundingClientRect.top < 0) {
+        entry.target.classList.add('fading');
+      } else {
+        entry.target.classList.remove('fading');
+      }
+    });
+  }, { threshold: [0, 0.15, 0.5, 1] });
+  sections.forEach(s => sectionObserver.observe(s));
+
+  // ---- Navbar scroll ----
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // ---- Hero weather particles: rain, snow, lightning ----
+  const weatherContainer = document.getElementById('heroWeather');
+  if (weatherContainer) {
+    // Rain
+    for (let i = 0; i < 35; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'raindrop';
+      drop.style.left = (Math.random() * 65) + '%'; // left side bias
+      drop.style.height = (Math.random() * 30 + 15) + 'px';
+      drop.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+      drop.style.animationDelay = (Math.random() * 3) + 's';
+      weatherContainer.appendChild(drop);
+    }
+    // Snowflakes
+    const snowChars = ['\u2744', '\u2745', '\u2746', '\u00B7'];
+    for (let i = 0; i < 20; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.textContent = snowChars[Math.floor(Math.random() * snowChars.length)];
+      flake.style.left = (60 + Math.random() * 38) + '%'; // right side bias
+      flake.style.fontSize = (Math.random() * 10 + 8) + 'px';
+      flake.style.animationDuration = (Math.random() * 6 + 5) + 's';
+      flake.style.animationDelay = (Math.random() * 8) + 's';
+      weatherContainer.appendChild(flake);
+    }
+    // Lightning flashes — prominent bolts with sky illumination
+    // Generate a realistic lightning path using random walk with downward bias
+    function generateBoltPath(startX, startY, length, jitterAmount, segmentLen) {
+      // Returns array of [x, y] points
+      let points = [[startX, startY]];
+      let x = startX, y = startY;
+      // Slight overall lean (most bolts drift slightly to one side)
+      const lean = (Math.random() - 0.5) * 0.4;
+      while (y - startY < length) {
+        // Mostly downward, small random horizontal jitter
+        const segLen = segmentLen * (0.7 + Math.random() * 0.6);
+        const angle = (Math.random() - 0.5) * jitterAmount + lean;
+        // Constrain to mostly-downward (max ~25 deg from vertical)
+        const clampedAngle = Math.max(-0.45, Math.min(0.45, angle));
+        x += Math.sin(clampedAngle) * segLen;
+        y += Math.cos(clampedAngle) * segLen;
+        points.push([x, y]);
+      }
+      return points;
+    }
+
+    function pointsToPath(points) {
+      return 'M' + points.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L');
+    }
+
+    function createLightning() {
+      const xPos = 8 + Math.random() * 45; // left-center area
+      const boltHeight = 220 + Math.random() * 280;
+      const boltWidth = 80 + Math.random() * 40; // wider container for branches
+      const startX = boltWidth / 2;
+
+      // Sky flash overlay
+      const skyFlash = document.createElement('div');
+      skyFlash.className = 'lightning-sky-flash';
+      skyFlash.style.setProperty('--flash-x', xPos + '%');
+      skyFlash.style.animation = 'sky-flash 4s ease-in-out';
+      weatherContainer.appendChild(skyFlash);
+      setTimeout(() => skyFlash.remove(), 4500);
+
+      // Main bolt
+      const bolt = document.createElement('div');
+      bolt.className = 'lightning';
+      bolt.style.left = xPos + '%';
+      bolt.style.top = '0';
+
+      // Generate main bolt as random walk
+      const mainPoints = generateBoltPath(startX, 0, boltHeight, 0.55, 14);
+      const mainPath = pointsToPath(mainPoints);
+
+      // Generate 2-4 branch forks at random points along the main bolt
+      const branchCount = 2 + Math.floor(Math.random() * 3);
+      let branchPaths = [];
+      for (let b = 0; b < branchCount; b++) {
+        // Branch from 25%-85% down the main bolt
+        const branchIdx = Math.floor(mainPoints.length * (0.25 + Math.random() * 0.6));
+        if (branchIdx >= mainPoints.length) continue;
+        const [bx, by] = mainPoints[branchIdx];
+        // Branch goes ~20-60% the remaining distance
+        const branchLen = (boltHeight - by) * (0.2 + Math.random() * 0.4);
+        if (branchLen < 20) continue;
+        // Branch leans away from main bolt
+        const branchPoints = generateBoltPath(bx, by, branchLen, 0.7, 10);
+        // Add lateral push to first segment so it visibly diverges
+        if (branchPoints.length > 1) {
+          const dir = Math.random() > 0.5 ? 1 : -1;
+          for (let i = 1; i < branchPoints.length; i++) {
+            branchPoints[i][0] += dir * (i * 1.8);
+          }
+        }
+        branchPaths.push({
+          path: pointsToPath(branchPoints),
+          width: 1.2 + Math.random() * 0.8,
+        });
+      }
+
+      const branchSvg = branchPaths.map(b => `
+        <path d="${b.path}" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="${b.width + 1}" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="${b.path}" fill="none" stroke="rgba(251,220,140,0.8)" stroke-width="${b.width}" stroke-linecap="round" stroke-linejoin="round"/>
+      `).join('');
+
+      bolt.innerHTML = `<svg viewBox="0 0 ${boltWidth} ${boltHeight}" width="${boltWidth}" height="${boltHeight}" style="position:absolute;top:0;left:${-boltWidth/2}px;">
+        <!-- Outer glow -->
+        <path d="${mainPath}" fill="none" stroke="rgba(200,220,255,0.35)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- White core -->
+        <path d="${mainPath}" fill="none" stroke="rgba(255,255,255,0.98)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Inner gold -->
+        <path d="${mainPath}" fill="none" stroke="rgba(251,220,140,0.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        ${branchSvg}
+      </svg>`;
+      bolt.style.animation = 'lightning-flash 4s ease-in-out';
+      weatherContainer.appendChild(bolt);
+      setTimeout(() => bolt.remove(), 4500);
+
+      // Occasionally fire a second bolt nearby for drama
+      if (Math.random() > 0.65) {
+        setTimeout(() => createLightning(), 150 + Math.random() * 300);
+      }
+    }
+    // Fire lightning periodically
+    setTimeout(createLightning, 1200);
+    setInterval(() => { createLightning(); }, 3000 + Math.random() * 3000);
+  }
+
+  // ---- Smooth scroll ----
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ---- Stacked-Center Carousel (à la Symbiotek) ----
+  document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+    const track = wrapper.querySelector('.carousel-track');
+    if (!track) return;
+    const cards = Array.from(track.children);
+    const prevBtn = wrapper.querySelector('.carousel-nav.prev');
+    const nextBtn = wrapper.querySelector('.carousel-nav.next');
+    const dotsContainer = wrapper.querySelector('.carousel-dots');
+    if (!cards.length) return;
+
+    let activeIndex = 0;
+    const STEP_SCALE = 0.18;
+    const STEP_OPACITY = 0.35;
+    const MAX_VISIBLE = 2;
+
+    // Compute the horizontal step between adjacent cards as a fraction of
+    // the active card's actual rendered width. This guarantees consistent
+    // visual spacing regardless of card size or viewport.
+    const getStepX = () => {
+      const ratio = parseFloat(getComputedStyle(wrapper).getPropertyValue('--step-ratio')) || 0.78;
+      const cardWidth = cards[activeIndex]?.offsetWidth || 360;
+      return cardWidth * ratio;
+    };
+
+    function layout() {
+      const stepX = getStepX();
+      cards.forEach((card, i) => {
+        const offset = i - activeIndex;
+        const abs = Math.abs(offset);
+        if (abs > MAX_VISIBLE) {
+          const sign = offset === 0 ? 0 : (offset > 0 ? 1 : -1);
+          card.style.transform = `translate(-50%, -50%) translateX(${sign * stepX * (MAX_VISIBLE + 1)}px) scale(${1 - STEP_SCALE * (MAX_VISIBLE + 1)})`;
+          card.style.opacity = '0';
+          card.style.pointerEvents = 'none';
+          card.style.zIndex = '0';
+          return;
+        }
+        const x = offset * stepX;
+        const scale = 1 - STEP_SCALE * abs;
+        const opacity = 1 - STEP_OPACITY * abs;
+        card.style.transform = `translate(-50%, -50%) translateX(${x}px) scale(${scale})`;
+        card.style.opacity = String(opacity);
+        card.style.zIndex = String(10 - abs);
+        card.style.pointerEvents = abs === 0 ? 'auto' : 'auto';
+      });
+      if (dots.length) dots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
+    }
+
+    function goTo(i) {
+      activeIndex = Math.max(0, Math.min(cards.length - 1, i));
+      layout();
+    }
+
+    // Build dots
+    if (dotsContainer) dotsContainer.innerHTML = '';
+    const dots = cards.map((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      d.addEventListener('click', () => goTo(i));
+      if (dotsContainer) dotsContainer.appendChild(d);
+      return d;
+    });
+
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo(activeIndex - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(activeIndex + 1));
+
+    // Click on a side card to focus it
+    cards.forEach((card, i) => {
+      card.addEventListener('click', e => {
+        if (i !== activeIndex && !dragMoved) {
+          e.preventDefault();
+          e.stopPropagation();
+          goTo(i);
+        }
+      });
+    });
+
+    // Drag / swipe (mouse + touch)
+    let dragging = false, startX = 0, accumDx = 0, dragMoved = false;
+    const DRAG_THRESHOLD = 60;
+
+    const onDown = e => {
+      dragging = true;
+      dragMoved = false;
+      track.classList.add('dragging');
+      startX = (e.touches ? e.touches[0].clientX : e.clientX);
+      accumDx = 0;
+    };
+    const onMove = e => {
+      if (!dragging) return;
+      const x = (e.touches ? e.touches[0].clientX : e.clientX);
+      accumDx = x - startX;
+      if (Math.abs(accumDx) > 5) dragMoved = true;
+    };
+    const onUp = () => {
+      if (!dragging) return;
+      dragging = false;
+      track.classList.remove('dragging');
+      if (accumDx > DRAG_THRESHOLD) goTo(activeIndex - 1);
+      else if (accumDx < -DRAG_THRESHOLD) goTo(activeIndex + 1);
+      // Reset dragMoved on next tick so click handler sees the correct value
+      setTimeout(() => { dragMoved = false; }, 50);
+    };
+
+    track.addEventListener('mousedown', onDown);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    track.addEventListener('touchstart', onDown, { passive: true });
+    track.addEventListener('touchmove', onMove, { passive: true });
+    track.addEventListener('touchend', onUp);
+
+    // Keyboard support when wrapper has focus
+    wrapper.tabIndex = 0;
+    wrapper.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(activeIndex - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(activeIndex + 1); }
+    });
+
+    // Re-layout on resize (in case --step-x changes via media queries)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layout, 100);
+    });
+
+    layout();
+  });
+});
+</script>
+</body>
+</html>
