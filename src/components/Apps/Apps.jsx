@@ -5,8 +5,6 @@ export const apps = [
   {
     id: 'weathernavigator',
     name: 'WeatherNavigator',
-    badge: 'Coming Soon',
-    comingSoon: true,
     tagline: 'AI weather-safe navigation. Skye sees the storm before you do.',
     description: 'The only navigation app that shows you the weather along your entire route — at the time you\'ll actually be there. Colour-coded routes, predictive storm intercept, and an AI co-pilot named Skye that briefs you before every drive and reroutes you around hazards in real time.',
     fullDescription: `WeatherNavigator is the only navigation app that shows you the weather along your entire route — at the time you'll actually be there.
@@ -57,6 +55,7 @@ WeatherNavigator offers a 7-day free trial with full access to all features. Aft
 
 Payment is charged to your Apple ID account. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. Manage subscriptions in Settings > Apple ID > Subscriptions.`,
     icon: '/assets/weathernavigator-icon.png',
+    appStoreUrl: 'https://apps.apple.com/au/app/weathernavigator/id6761960363',
     marketingUrl: '/weathernavigator/marketing.html',
     trustSignals: ['Apple WeatherKit', 'CarPlay', 'Skye AI Co-pilot', '7-day free trial'],
     howItWorks: [
@@ -69,7 +68,7 @@ Payment is charged to your Apple ID account. Subscriptions automatically renew u
       { question: 'Does it work in my country?', answer: 'Forecasts and routing are available globally. Some live-radar layers are region-specific (NEXRAD is US, OpenWeatherMap is global, BoM is Australia).' },
       { question: 'Do I need a subscription?', answer: 'There\'s a 7-day free trial of every feature. After that, Monthly is $3.99/month and Annual is $29.99/year (which works out to $2.50/month). Both unlock the same complete feature set.' },
       { question: 'Does it support CarPlay?', answer: 'Yes — full navigation, alerts, and Skye briefings work on CarPlay displays.' },
-      { question: 'When is it launching?', answer: 'WeatherNavigator is in App Store review. Watch this space for the launch date.' }
+      { question: 'Is it available on Android?', answer: 'Not yet. WeatherNavigator is currently iOS-only with CarPlay support. Android is on the roadmap.' }
     ],
     legalLinks: [
       { label: 'Privacy Policy', href: '/weathernavigator/privacy-policy.html' },
