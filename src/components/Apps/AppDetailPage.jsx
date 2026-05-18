@@ -143,6 +143,57 @@ function getScreenshotsForApp(appId) {
   }
 }
 
+// Advisor slide for the Board roster carousel. Off-centre slides show only the
+// portrait; the centred slide adds the name + title strip below.
+const AdvisorSlide = memo(function AdvisorSlide(props) {
+  const { data, dataIndex, isCenterSlide } = props
+  const advisor = data[dataIndex]
+  return (
+    <div
+      draggable={false}
+      style={{
+        width: '100%',
+        height: 460,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        userSelect: 'none',
+        willChange: 'transform',
+        transform: 'translateZ(0)'
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          aspectRatio: '1 / 1',
+          maxHeight: 380,
+          overflow: 'hidden',
+          borderRadius: 12,
+          border: '1px solid rgba(212, 169, 66, 0.35)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+          background: advisor.accent_color ? `${advisor.accent_color}33` : '#2a241833'
+        }}
+      >
+        <img
+          src={advisor.avatar_url}
+          alt={advisor.name}
+          draggable={false}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </div>
+      {isCenterSlide && (
+        <div style={{ marginTop: 16, textAlign: 'center' }}>
+          <div style={{ fontSize: 18, fontWeight: 700, color: '#f5e6b8' }}>{advisor.name}</div>
+          <div style={{ marginTop: 4, fontSize: 12, fontWeight: 600, color: '#d4a942', letterSpacing: 0.3 }}>
+            {advisor.title} · {advisor.era}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+})
+
 // Screenshot slide component for carousel
 const ScreenshotSlide = memo(function ScreenshotSlide(props) {
   const { data, dataIndex } = props
@@ -249,6 +300,7 @@ export default function AppDetailPage() {
   const allApps = [...apps, ...workApps, board].filter(a => !a.hidden)
   const app = allApps.find(a => a.id === appId)
   const carouselRef = useRef()
+  const advisorCarouselRef = useRef()
 
   // Scroll to top when page loads
   useEffect(() => {
@@ -494,6 +546,53 @@ export default function AppDetailPage() {
                 </svg>
               </button>
               <button onClick={() => carouselRef.current?.goNext()}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Board roster carousel — mirrors the BoardRosterCarousel from pantheon-board.com */}
+      {app.advisors && app.advisors.length > 0 && (
+        <div className="container">
+          <motion.div
+            className="detail-page__screenshots"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.5 }}
+            style={{ touchAction: 'pan-y' }}
+          >
+            <h2 className="detail-page__screenshots-title">The Board — 22 Historical Advisors</h2>
+            <div className="carousel-wrapper">
+              <ResponsiveContainer
+                carouselRef={advisorCarouselRef}
+                render={(parentWidth) => (
+                  <StackedCarousel
+                    ref={advisorCarouselRef}
+                    data={app.advisors}
+                    carouselWidth={parentWidth}
+                    slideWidth={300}
+                    slideComponent={AdvisorSlide}
+                    maxVisibleSlide={5}
+                    currentVisibleSlide={5}
+                    useGrabCursor={true}
+                    height={460}
+                    fadeDistance={0.55}
+                    transitionTime={350}
+                  />
+                )}
+              />
+            </div>
+            <div className="carousel-nav">
+              <button onClick={() => advisorCarouselRef.current?.goBack()} aria-label="Previous advisor">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12 15L7 10L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button onClick={() => advisorCarouselRef.current?.goNext()} aria-label="Next advisor">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
