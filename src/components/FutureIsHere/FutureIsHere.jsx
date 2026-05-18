@@ -59,6 +59,15 @@ Sharper than any single AI chat because the disagreement is the point. Most foun
   icon: '/assets/board-icon.png',
   webUrl: 'https://pantheon-board.com',
   bottomCtaText: 'Convene your board. Land a verdict.',
+  launchButtonStyle: {
+    background: 'linear-gradient(135deg, #b8941f 0%, #d4a942 45%, #f5e6b8 65%, #d4a942 85%, #7d6608 100%)',
+    border: '1px solid rgba(245, 230, 184, 0.55)',
+    color: '#1a1207',
+    fontWeight: 700,
+    letterSpacing: 0.3,
+    boxShadow: '0 8px 24px rgba(180, 138, 35, 0.35), inset 0 1px 0 rgba(255, 248, 220, 0.4)',
+    textShadow: '0 1px 0 rgba(255, 245, 210, 0.4)'
+  },
   trustSignals: ['22 Historical Advisors', 'Chair-Led Verdict', 'Claude + MCP', '20 Free Credits'],
   howItWorks: [
     { step: 1, title: 'Pick your board', description: 'Choose 2–7 advisors from a curated roster of 22 historical operators — strategists, brand-builders, scientists, and leaders.' },
@@ -84,9 +93,6 @@ export default function FutureIsHere() {
 
       <div className="apps">
         <AppCard app={board} />
-      </div>
-
-      <div className="podcasts" style={{ marginTop: 32 }}>
         <PodcastCard podcast={futureForward} />
       </div>
     </Section>

@@ -392,6 +392,7 @@ export default function AppDetailPage() {
                 target="_blank"
                 rel="noreferrer"
                 className="detail-page__launch-btn"
+                style={app.launchButtonStyle}
               >
                 Launch App
               </a>
@@ -618,6 +619,7 @@ export default function AppDetailPage() {
               target="_blank"
               rel="noreferrer"
               className="detail-page__launch-btn"
+              style={app.launchButtonStyle}
             >
               Launch {app.name}
             </a>
