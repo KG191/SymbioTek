@@ -446,7 +446,7 @@ export default function AppDetailPage() {
                 className="detail-page__launch-btn"
                 style={app.launchButtonStyle}
               >
-                Launch App
+                Launch {app.name}
               </a>
             </motion.div>
           )}
