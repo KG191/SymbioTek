@@ -38,6 +38,7 @@ No need to carry the standard on-site. A built-in quick reference covers all sig
       { question: 'Can I export my audit data?', answer: 'Yes. Generate comprehensive gap-analysis reports and export your findings as CSV for further analysis, record-keeping, or sharing with stakeholders.' }
     ],
     icon: '/assets/safety-signage-icon.png',
+    bottomCtaText: 'Ready to streamline your safety audits?',
     hidden: true
   },
   {

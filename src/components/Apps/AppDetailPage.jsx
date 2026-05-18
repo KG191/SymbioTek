@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { StackedCarousel, ResponsiveContainer } from 'react-stacked-center-carousel'
 import { apps } from './Apps'
 import { workApps } from '../WorkApps/WorkApps'
+import { board } from '../FutureIsHere/FutureIsHere'
 
 // Screenshots for Kidz app
 const kidzScreenshots = [
@@ -245,7 +246,7 @@ function formatContent(content) {
 
 export default function AppDetailPage() {
   const { appId } = useParams()
-  const allApps = [...apps, ...workApps].filter(a => !a.hidden)
+  const allApps = [...apps, ...workApps, board].filter(a => !a.hidden)
   const app = allApps.find(a => a.id === appId)
   const carouselRef = useRef()
 
@@ -572,14 +573,14 @@ export default function AppDetailPage() {
         )}
 
         {/* Bottom CTA */}
-        {app.webUrl && (
+        {app.webUrl && app.bottomCtaText && (
           <motion.div
             className="detail-page__bottom-cta"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.4 }}
           >
-            <p className="detail-page__cta-text">Ready to streamline your safety audits?</p>
+            <p className="detail-page__cta-text">{app.bottomCtaText}</p>
           </motion.div>
         )}
 
