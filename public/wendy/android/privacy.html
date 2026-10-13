@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How Wendy for Android processes coaching text, optional speech, purchases and security data, and how to delete local history.">
+  <title>Wendy for Android — Privacy policy</title>
+  <link rel="stylesheet" href="policy.css">
+</head>
+<body><main>
+  <nav aria-label="Policy navigation"><a href="index.html">Android policies and support</a><a href="terms.html">Terms</a></nav>
+  <h1>Privacy policy</h1>
+  <p class="meta">Wendy Performance Coach for Android · Updated 13 October 2026</p>
+  <p class="scope">This policy describes Android version 2.0 and its workplace coaching service, including internal testing. It does not cover Wendy on iOS.</p>
+  <p>Symbiotek Pty Ltd (“we”) provides Wendy. Contact us about privacy at <a href="mailto:symbiotek@symbio-tek.com">symbiotek@symbio-tek.com</a>.</p>
+  <h2>Discussions and saved plans</h2>
+  <p>No Wendy account or sign-in is required. The app stores discussions, CALM plans, preferences and the count of completed free outcomes in private storage on your device. Android app backup is disabled.</p>
+  <p>When you send a message or request a plan with online coaching enabled, relevant discussion context is sent over an encrypted connection through our Cloudflare-hosted service to OpenAI to generate a response. Context can include earlier messages, your current plan and details you supplied. This is online processing, not exclusively on-device coaching.</p>
+  <p>Text can contain personal information about you or others. Share only what you are entitled to share, and avoid unnecessary names, confidential employer material and sensitive personal details.</p>
+  <h2>Optional speech</h2>
+  <ul>
+    <li><strong>Dictation:</strong> after microphone permission is granted, your device’s speech-recognition provider converts speech to text. Depending on the provider and language, audio may be sent to that provider for online processing. Recognised text appears in Wendy; when you send it, it becomes coaching input.</li>
+    <li><strong>Read aloud:</strong> tapping Read plan or Read latest reply sends the selected text through our service to ElevenLabs to generate audio using Wendy’s selected voice. Wendy keeps the returned audio in memory for playback and clears that buffer when playback completes or is stopped. Wendy does not use your microphone recording to clone a voice.</li>
+  </ul>
+  <p>You can use text without microphone permission, turn off speech controls, or disable online coaching and speech in Settings. Provider processing and retention are separate from Wendy’s in-memory playback buffer.</p>
+  <h2>Security, usage and diagnostics</h2>
+  <p>Cloudflare receives network request information, including your IP address. Our service uses an app installation identifier, Google Play Integrity verification, request challenges, usage counters and operational error/status records to authenticate requests, prevent abuse, enforce usage limits and troubleshoot failures. Our rate-limit records use a daily cryptographic value derived from the IP address rather than storing the raw IP in those counters.</p>
+  <p>The service’s application logging omits discussion text, generated audio and provider credentials. Infrastructure providers may separately process network and diagnostic information under their policies. No advertising SDK or cross-app advertising tracking is included in this Android version.</p>
+  <h2>Google Play purchases</h2>
+  <p>Google Play processes subscriptions and payments. Wendy receives purchase and subscription-status information to grant, acknowledge and restore Premium access. You do not enter payment-card details into Wendy. Your Google Play account is separate from the no-sign-in Wendy experience.</p>
+  <h2>Who processes information</h2>
+  <p>We use Cloudflare for hosting and security, OpenAI for coaching responses, ElevenLabs for selected speech playback, and Google Play for app integrity and billing. Your installed speech provider handles dictation. These services may process information outside your country. Their applicable terms, privacy policies and service settings govern their processing and retention.</p>
+  <ul>
+    <li><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare privacy policy</a></li>
+    <li><a href="https://openai.com/policies/privacy-policy/">OpenAI privacy policy</a></li>
+    <li><a href="https://elevenlabs.io/privacy-policy">ElevenLabs privacy policy</a></li>
+    <li><a href="https://policies.google.com/privacy">Google privacy policy</a></li>
+  </ul>
+  <p>We do not sell your discussions or plans. If you export a session, its text is shared with the app or destination you select, whose own handling then applies. If you email support, we process the message and your contact details to respond.</p>
+  <h2>Retention</h2>
+  <ul>
+    <li><strong>Local discussions and plans:</strong> kept until you delete them or remove the app’s local data. Exported copies remain wherever you saved or shared them.</li>
+    <li><strong>Our coaching service:</strong> the application processes discussion text and playback requests to answer them; it does not maintain a server-side transcript or audio library. Providers can retain request information separately. This is not a promise of zero retention by all services.</li>
+    <li><strong>Security counters:</strong> challenges expire after two minutes. Scheduled cleanup removes expired challenges, minute-based counters older than about an hour, and daily counters after approximately three days. Cleanup timing can vary with service operation.</li>
+    <li><strong>Other service records:</strong> infrastructure logs and provider records follow the applicable service settings and retention policies. Support correspondence is retained as needed to resolve the enquiry and meet applicable legal obligations. Google retains its payment records under its policies.</li>
+  </ul>
+  <h2 id="deletion">Deletion and privacy requests</h2>
+  <p>Use Delete this session or Settings → Delete all history to remove local discussions and plans. Deleting history preserves the completed-outcome count and purchase eligibility; it does not reset free access or cancel a Google Play subscription. Uninstalling removes the app’s local data but does not remove exported copies or automatically erase provider or billing records.</p>
+  <p>For access, correction, deletion or a privacy concern relating to information processed by us, email <a href="mailto:symbiotek@symbio-tek.com">symbiotek@symbio-tek.com</a>. Describe the request without sending your full coaching history. Because there is no Wendy account, we may need limited additional information to identify records associated with a request. We will explain any verification needed or retention required by law. Local-only records are controlled on your device.</p>
+  <h2>Adults and policy updates</h2>
+  <p>Wendy is intended for adults aged 18 and over. If you believe a child has provided personal information, contact us. We may update this policy as the service changes and will show the updated date here and provide additional notice where required.</p>
+  <footer><a href="index.html#support">Support</a> · <a href="terms.html">Android terms</a></footer>
+</main></body>
+</html>
