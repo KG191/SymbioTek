@@ -19,7 +19,7 @@
 
 <h1>Privacy Policy</h1>
 <p><strong>WeatherNavigator</strong><br>
-<strong>Last updated: 9 August 2026</strong></p>
+<strong>Last updated: 17 August 2026</strong></p>
 
 <h2>Overview</h2>
 <p>WeatherNavigator ("the App") is developed by Symbiotek Pty Ltd and is available for iOS (via the Apple App Store) and Android (via Google Play). We take your privacy seriously. This policy explains what data the App collects, how it is used, and your choices. It applies to both the iOS and Android versions except where a platform is stated.</p>
@@ -34,16 +34,23 @@
     <li>Fetch weather conditions along your route</li>
     <li>Deliver timely weather alerts while driving</li>
 </ul>
-<p>Location data is processed locally on your device and sent to third-party weather services (see below) only as geographic coordinates to retrieve forecasts. We do not store your location history on any server.</p>
+<p>Location data is processed on your device and is also sent, as needed, to mapping, routing, place-search, weather, warning, and Skye AI services described below. We do not store a route-by-route location history on Symbiotek servers.</p>
 
 <h3>Microphone and Speech</h3>
 <p>If you use Skye voice commands, the App accesses your microphone to process spoken input. Speech recognition may use your device platform's recognition service (Apple's on-device or server-side recognition on iOS; Google's speech recognition on Android) to convert your voice to text. Voice audio is not stored or transmitted to our servers.</p>
 
 <h3>Saved Routes</h3>
-<p>Routes you save (origin, destination, name) are stored locally on your device in the App's private storage. This data is not transmitted externally.</p>
+<p>Routes you save (origin, destination, name) are stored locally on your device in the App's private storage. When you search for, calculate, or navigate a route, the relevant place names, search terms, and coordinates are sent to mapping and routing providers.</p>
+
+<h3>Trip Journal (iOS)</h3>
+<p>If Trip Journal is enabled, completed-trip summaries are stored locally in protected Application Support storage. Entries may include origin and destination place names, dates, distance, duration, weather summaries, data sources, hazards, alerts, Skye interventions, reroute choices, and notes. Exact origin and destination coordinates are not retained in journal entries. The default retention period is 90 days; you can choose 30, 90, or 365 days, or no automatic deletion, and can delete individual entries or clear the journal at any time.</p>
 
 <h3>Driver Profile</h3>
-<p>The App builds a local behavioural profile (e.g. preferred alert verbosity, trip count) to personalise your experience. This profile is stored entirely on your device and is never uploaded.</p>
+<p>The App keeps local presentation preferences (for example, preferred information detail, alert interactions, reroute choices, and trip count) to personalise how information is presented. These preferences do not lower hazard thresholds or suppress official warnings. The profile is stored on your device and is not uploaded as a profile.</p>
+
+<h3>Skye AI Requests and Local Diagnostics (iOS)</h3>
+<p>When you use Skye, the App may send your question or command, recent conversation, current location, destination details, and route-weather context through Symbiotek's Cloudflare proxy to Anthropic to generate a response. The proxy receives an anonymous random per-install identifier to apply a daily request limit; it is not your advertising identifier and is not linked by us to a name or account.</p>
+<p>The iOS App keeps privacy-minimised Skye diagnostics locally for up to 7 days and 100 events. These records contain version identifiers, feature category, data-freshness state, safety category, source timestamps, and outcome, but not prompt text, response text, place names, or coordinates. You can clear them with <em>Reset Skye Data</em>.</p>
 
 <h3>Subscription Data</h3>
 <p>In-app purchases and subscriptions are managed by the platform's store: Apple's StoreKit on iOS, and Google Play Billing on Android. We do not collect or have access to your payment information. A local record of your subscription status is stored on your device.</p>
@@ -69,24 +76,25 @@
     <tr><td><strong>Open-Meteo</strong></td><td>Geographic coordinates</td><td>ECMWF weather forecasts</td></tr>
     <tr><td><strong>Bureau of Meteorology (Australia)</strong></td><td>Geographic region</td><td>Severe weather warnings</td></tr>
     <tr><td><strong>US National Weather Service</strong></td><td>Geographic region</td><td>US weather alerts</td></tr>
-    <tr><td><strong>Anthropic Claude API</strong></td><td>Route/weather context (no personal data)</td><td>Skye AI driving assistant responses</td></tr>
+    <tr><td><strong>Cloudflare</strong> (iOS Skye proxy)</td><td>Anonymous per-install identifier, Skye request content, feature/version headers, and standard network information such as IP address</td><td>Secure proxying, operational configuration, capability suspension, and coarse daily request limiting</td></tr>
+    <tr><td><strong>Anthropic Claude API</strong></td><td>Questions or commands, recent conversation, current location, destination details, and route/weather context when needed</td><td>Skye AI driving assistant responses</td></tr>
     <tr><td><strong>Google Maps Platform</strong> (iOS and Android)</td><td>Geographic coordinates, place search queries</td><td>Map display, routing, and place search</td></tr>
     <tr><td><strong>Google AdMob and User Messaging Platform</strong> (Free tier on iOS and Android)</td><td>IP address or approximate location, app and ad interactions, crash and performance information, advertising data, device or app identifiers, and consent choices</td><td>Ad delivery, consent management, analytics, service performance, and fraud prevention</td></tr>
 </table>
 
-<p>WeatherNavigator does not send your name or email address to these services. Third-party services may process the data listed above under their own privacy policies.</p>
+<p>WeatherNavigator does not send your name or email address to these services. Third-party services may process the data listed above under their own privacy policies. The App uses an operational proxy and rate-limit store, but Symbiotek does not use it to build a location history or advertising profile.</p>
 
 <h2>What We Do NOT Collect</h2>
 <ul>
     <li>We do not collect your name, email address, or any account information</li>
     <li>We do not sell your personal information</li>
     <li>We do not operate our own analytics or cross-app tracking service</li>
-    <li>We do not collect crash reports or telemetry on our own servers</li>
+    <li>We do not collect prompt text, response text, place names, or coordinates in the App's local Skye diagnostic records</li>
     <li>We do not display advertising during active navigation or to Skye Premium subscribers and active trial users on either platform</li>
 </ul>
 
 <h2>Data Storage</h2>
-<p>Your saved routes, preferences, driver profile, and subscription status are stored locally on your device. We do not operate servers that store this app data. On the Free tier on iOS and Android, Google advertising services may store or access identifiers, consent choices, and other advertising data as described above.</p>
+<p>Your saved routes, preferences, driver profile, Trip Journal (iOS), local Skye diagnostics (iOS), and subscription status are stored locally on your device. On iOS, Trip Journal and Skye diagnostic files use complete file protection, atomic writes, and backup exclusion. The Cloudflare proxy maintains a coarse per-install daily request counter and operational configuration; it is not used as a trip or conversation archive. Google advertising services may store or access identifiers, consent choices, and other advertising data as described above.</p>
 
 <h2>Children's Privacy</h2>
 <p>The App does not knowingly collect data from children under 13. The App is a navigation tool and does not target children.</p>
@@ -96,6 +104,7 @@
     <li><strong>Location</strong>: You can revoke location access at any time (iOS: Settings &gt; Privacy &gt; Location Services; Android: Settings &gt; Apps &gt; WeatherNavigator &gt; Permissions). The App requires location access to function.</li>
     <li><strong>Microphone</strong>: You can revoke microphone access (iOS: Settings &gt; Privacy &gt; Microphone; Android: Settings &gt; Apps &gt; WeatherNavigator &gt; Permissions). Voice commands will be unavailable, but all other features will work.</li>
     <li><strong>Saved Routes</strong>: You can delete saved routes within the App at any time.</li>
+    <li><strong>Privacy and My Data</strong> (iOS): In Settings, you can enable or disable future Trip Journal entries, choose retention, delete entries, clear the journal, clear saved routes and the widget commute snapshot, or reset Skye's local preferences, calibration data, current conversation, anonymous proxy identifier, and diagnostics.</li>
     <li><strong>Advertising privacy</strong> (Free tier on iOS and Android): Where required, you can review or change your choices using <em>Privacy &amp; Advertising Choices</em> in the App's Settings screen. You can also manage advertising and tracking permissions in your iOS privacy settings, or reset or delete your advertising ID through your Android privacy settings.</li>
 </ul>
 
