@@ -19,7 +19,7 @@
 
 <h1>Privacy Policy</h1>
 <p><strong>WeatherNavigator</strong><br>
-<strong>Last updated: 9 August 2026</strong></p>
+<strong>Last updated: 21 November 2026</strong></p>
 
 <h2>Overview</h2>
 <p>WeatherNavigator ("the App") is developed by Symbiotek Pty Ltd and is available for iOS (via the Apple App Store) and Android (via Google Play). We take your privacy seriously. This policy explains what data the App collects, how it is used, and your choices. It applies to both the iOS and Android versions except where a platform is stated.</p>
@@ -34,19 +34,19 @@
     <li>Fetch weather conditions along your route</li>
     <li>Deliver timely weather alerts while driving</li>
 </ul>
-<p>Location data is processed locally on your device and sent to third-party weather services (see below) only as geographic coordinates to retrieve forecasts. We do not store your location history on any server.</p>
+<p>Location is used on your device and supplied to mapping, routing and weather providers for the requested features. On iOS, relevant precise current location, destination details and route-weather context may also be included in Skye requests through Cloudflare to Anthropic. These services are separate from optional usage analytics, which excludes location and route data.</p>
 
 <h3>Microphone and Speech</h3>
 <p>If you use Skye voice commands, the App accesses your microphone to process spoken input. Speech recognition may use your device platform's recognition service (Apple's on-device or server-side recognition on iOS; Google's speech recognition on Android) to convert your voice to text. Voice audio is not stored or transmitted to our servers.</p>
 
 <h3>Saved Routes</h3>
-<p>Routes you save (origin, destination, name) are stored locally on your device in the App's private storage. This data is not transmitted externally.</p>
+<p>Routes you save (origin, destination, name) are stored locally on your device in the App's private storage. The saved-route file is kept locally. Coordinates, destinations and searches needed for a requested route, map or Skye answer may be processed by the services described below.</p>
 
 <h3>Driver Profile</h3>
-<p>The App builds a local behavioural profile (e.g. preferred alert verbosity, trip count) to personalise your experience. This profile is stored entirely on your device and is never uploaded.</p>
+<p>The App stores local preferences and behavioural counters, such as preferred alert verbosity and trip count, to personalise your experience. The local profile file is not uploaded to the usage collector. Separately, in iOS 1.2.14 and later, after explicit Skye AI permission and separate profile-sharing permission, a selected Driver Profile can add instructions to Skye AI briefing requests sent through Cloudflare to Anthropic. These instructions may state a hearing-impairment or anxiety preference, age-related style or new-driver preference. Leave profile sharing off, or choose Standard, to omit profile-specific instructions from future briefings. This operational use is separate from the optional Share app usage setting and may involve sensitive information.</p>
 
 <h3>Subscription Data</h3>
-<p>In-app purchases and subscriptions are managed by the platform's store: Apple's StoreKit on iOS, and Google Play Billing on Android. We do not collect or have access to your payment information. A local record of your subscription status is stored on your device.</p>
+<p>In-app purchases and subscriptions are managed by the platform's store: Apple's StoreKit on iOS, and Google Play Billing on Android. We do not receive your payment-card or bank details from the stores. A local record of your subscription status is stored on your device. If you enable optional iOS usage sharing, broad subscription and purchase-attempt outcomes are included in that separate dataset; receipts and transaction identifiers are excluded.</p>
 
 <h3>Advertising Data (Free Tier on iOS and Android)</h3>
 <p>The Free tier on iOS and Android may display a Google AdMob banner while you are stationary and reviewing a planned route. Advertising is not displayed during active navigation. Skye Premium subscribers and active trial users do not see advertising. The Google Mobile Ads SDK may automatically collect and share the following data with Google for advertising, analytics, service performance, and fraud-prevention purposes:</p>
@@ -58,9 +58,28 @@
     <li>Device or app identifiers, including a mobile advertising identifier where available and permitted by your platform settings and consent choices</li>
     <li>Your advertising privacy and consent choices</li>
 </ul>
-<p>This data is encrypted in transit. Depending on your region, consent choices, and device settings, Google may serve personalised, non-personalised, limited, or technical ads. WeatherNavigator uses Google's User Messaging Platform (UMP) to request and manage privacy choices where required. You can learn more about <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from apps that use its services</a> and read the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+<p>This data is encrypted in transit. On iOS, the app requests limited/non-personalised treatment, disables publisher first-party identifiers and does not request App Tracking Transparency permission. These controls do not mean the advertising SDK collects no data. Android advertising treatment depends on its configuration, your region and privacy choices. WeatherNavigator uses Google's User Messaging Platform (UMP) to request and manage privacy choices where required. You can learn more about <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from apps that use its services</a> and read the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+
+<h3>Optional iOS app usage sharing</h3>
+<p>This optional collection and its controls are introduced in iOS 1.2.14. They are not present in earlier iOS releases or introduced to Android by this update.</p>
+<p>If you turn on Share app usage in Settings → Privacy and My Data, WeatherNavigator sends limited usage information to Symbiotek Pty Ltd through Cloudflare. We use it to understand whether route previews succeed, whether acquired forecasts are displayed, which premium entry points are used, and whether purchase attempts succeed, are cancelled, remain pending or fail. We also measure app sessions and observed return visits.</p>
+<p>These records include the app version, ordinary/Duo presentation type, subscription category, time rounded to the minute, broad timing/error/forecast-coverage categories and random event, session and observation identifiers. The observation identifier lasts for a maximum 45-day measurement window. These records are pseudonymous: they can be associated within that window but are not joined to an Apple account, advertising identifier or external marketing identity.</p>
+<p>This usage collection does not contain your location, route geometry, destination or search text, voice recordings or transcripts, name, email, receipt, transaction identifier or payment details. Cloudflare processes the network connection, including the source IP address needed to deliver requests; our collector does not copy IP addresses into usage records or enable request/payload logs. Existing location, speech, advertising and AI services continue under their separate disclosures.</p>
+<p>Sharing is off initially. You can use all free and paid features without sharing. You can stop sharing and request deletion in the same privacy screen. Stopping sharing removes local usage records and sends a deletion request for uploaded usage records. If a deletion attempt cannot complete, the app waits six hours before the next attempt. The privacy screen shows the earliest retry date and time in your device&#x27;s local time. Reopen the app with an internet connection at or after that time. Another failed attempt starts another six-hour wait; completion is not guaranteed within six hours. Sharing stays off and cannot be turned on again until the server confirms deletion. Previously uploaded data remains subject to retention while the request is pending. This choice does not cancel a subscription or delete saved routes.</p>
+<p>Usage records expire 45 days after the observation window begins. Automated cleanup runs hourly; provider outages or quota exhaustion may delay physical deletion, and expired data is excluded from new reports. On successful deletion, the live payload is removed. A minimal deletion marker, containing the observation identifier, credential hash and operational counters/timestamps but no event payload, prevents delayed uploads from recreating it. It expires at the original observation deadline; if deletion arrives before any upload, its deadline is 45 days after that deletion request. Hourly cleanup removes expired markers, subject to outages and service limits. Cloudflare&#x27;s Free-plan recovery history can retain deleted database versions for up to seven additional days. Any copies exported by us for analysis are subject to the same withdrawal and 45-day expiry requirements. Deleting the app alone cannot deliver a pending server-deletion request; turn sharing off while connected and wait for confirmation before uninstalling if you want deletion before expiry. Contact Symbiotek using the policy&#x27;s existing contact details for privacy questions.</p>
+<p>We do not use this usage dataset for targeted advertising, cross-app tracking, selling data or reconstructing an individual App Store campaign identity.</p>
+
+
+
+<h2>Permission for Skye AI on iOS</h2>
+<p>Starting with iOS 1.2.14, cloud Skye processing starts off for new and existing installations until you explicitly choose Allow Skye AI. Before that choice, the app explains that questions, recent conversation, location, destination and route-weather context are processed through Cloudflare by Anthropic, together with an app-specific request-limit identifier. You can make or change the choice in Privacy &amp; My Data. The permission choice is presented on the iPhone when not navigating, moving or connected to CarPlay; do not change it while driving. Declining prevents cloud-generated answers and briefings but does not change subscription billing or entitlements. Existing local guidance and route-weather features remain available where supported.</p>
+<p>Including the selected Driver Profile in AI briefings requires a separate choice, initially off. Disabling profile sharing omits those instructions while preserving local accessibility settings. Turning off Skye AI permission also clears profile-sharing permission. Withdrawal blocks new Skye requests and cancels requests still controlled by the app, but cannot recall information already sent to providers. Reset Skye Data also withdraws these permissions. Optional app-usage sharing is an independent choice and neither switch changes the other.</p>
+
+<p>The explicit AI and profile-sharing controls described in this section apply to iOS 1.2.14 and later. Earlier iOS versions do not have these controls; update the app to use them. This iOS update does not add these controls to Android.</p>
 
 <h2>Third-Party Services</h2>
+<p>Additional iOS forecast and map-layer providers include Apple WeatherKit, RainViewer, NASA FIRMS/GIBS/GEOS-FP, Open-Meteo flood forecasts, Queensland air-quality services and radar/alert feeds. Depending on the feature, requests identify a coordinate, geographic area, station or map tile. Network providers receive the connection information needed to serve those requests. This operational traffic is separate from the optional usage collector.</p>
+<p>Cloudflare hosts the optional usage collector described above and the iOS Skye proxy. Skye requests include a random app-specific identifier for request limiting, separate from the usage observation identifier; daily request counters expire 48 hours after their last update. Our deployed proxy does not write conversation bodies to its counter database, and Worker request logging is disabled. This does not prevent provider infrastructure processing or Anthropic retention. <a href="https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data">Anthropic’s commercial API retention policy</a> generally provides for deletion of inputs and outputs within 30 days, with exceptions for agreements, safety enforcement and legal requirements. We do not claim a zero-retention agreement. Cloudflare and other providers may process data outside your country under their respective policies and service terms. Changing or deleting local app data does not undo processing already completed by these providers.</p>
 <p>The App connects to the following services to provide weather, AI, subscription, and advertising features:</p>
 
 <table>
@@ -69,38 +88,41 @@
     <tr><td><strong>Open-Meteo</strong></td><td>Geographic coordinates</td><td>ECMWF weather forecasts</td></tr>
     <tr><td><strong>Bureau of Meteorology (Australia)</strong></td><td>Geographic region</td><td>Severe weather warnings</td></tr>
     <tr><td><strong>US National Weather Service</strong></td><td>Geographic region</td><td>US weather alerts</td></tr>
-    <tr><td><strong>Anthropic Claude API</strong></td><td>Route/weather context (no personal data)</td><td>Skye AI driving assistant responses</td></tr>
+    <tr><td><strong>Anthropic Claude API</strong></td><td>On iOS, questions, recent conversation, relevant location/destination and route-weather context, and separately permitted Driver Profile instructions are sent through our Cloudflare proxy to Anthropic. In iOS 1.2.14 and later, this requires Skye AI permission and separate permission for profile instructions; earlier iOS versions lack these controls. This processing is separate from optional usage analytics</td><td>Skye AI driving assistant responses</td></tr>
     <tr><td><strong>Google Maps Platform</strong> (iOS and Android)</td><td>Geographic coordinates, place search queries</td><td>Map display, routing, and place search</td></tr>
     <tr><td><strong>Google AdMob and User Messaging Platform</strong> (Free tier on iOS and Android)</td><td>IP address or approximate location, app and ad interactions, crash and performance information, advertising data, device or app identifiers, and consent choices</td><td>Ad delivery, consent management, analytics, service performance, and fraud prevention</td></tr>
 </table>
 
-<p>WeatherNavigator does not send your name or email address to these services. Third-party services may process the data listed above under their own privacy policies.</p>
+<p>WeatherNavigator does not require an app account, name or email to use its features. If you include personal details in a question or contact us for support, those details form part of the message and may be processed to answer it. Third-party services may process the data listed above under their own privacy policies.</p>
 
 <h2>What We Do NOT Collect</h2>
 <ul>
-    <li>We do not collect your name, email address, or any account information</li>
+    <li>We do not require a WeatherNavigator account or collect store passwords or payment-card details</li>
     <li>We do not sell your personal information</li>
-    <li>We do not operate our own analytics or cross-app tracking service</li>
-    <li>We do not collect crash reports or telemetry on our own servers</li>
+    <li>Optional iOS usage analytics operates only after you turn on Share app usage, as described above. This usage dataset is not used for cross-app tracking</li>
+    <li>Our optional iOS usage collector stores the limited events described above. It does not collect crash reports. Google advertising services may collect diagnostic data as separately described</li>
     <li>We do not display advertising during active navigation or to Skye Premium subscribers and active trial users on either platform</li>
 </ul>
 
 <h2>Data Storage</h2>
-<p>Your saved routes, preferences, driver profile, and subscription status are stored locally on your device. We do not operate servers that store this app data. On the Free tier on iOS and Android, Google advertising services may store or access identifiers, consent choices, and other advertising data as described above.</p>
+<p>Your saved routes, preferences, driver profile, and subscription status are stored locally on your device. The optional iOS usage collector stores only the separate, consented usage dataset described above. Saved-route files and the local driver-profile file are not uploaded to this collector. On the Free tier on iOS and Android, Google advertising services may store or access identifiers, consent choices, and other advertising data as described above.</p>
 
 <h2>Children's Privacy</h2>
-<p>The App does not knowingly collect data from children under 13. The App is a navigation tool and does not target children.</p>
+<p>The App is a navigation tool and does not target children. If you believe a child has supplied personal information to us, contact us using the details below so we can investigate and address it.</p>
 
 <h2>Your Choices</h2>
 <ul>
     <li><strong>Location</strong>: You can revoke location access at any time (iOS: Settings &gt; Privacy &gt; Location Services; Android: Settings &gt; Apps &gt; WeatherNavigator &gt; Permissions). The App requires location access to function.</li>
     <li><strong>Microphone</strong>: You can revoke microphone access (iOS: Settings &gt; Privacy &gt; Microphone; Android: Settings &gt; Apps &gt; WeatherNavigator &gt; Permissions). Voice commands will be unavailable, but all other features will work.</li>
+    <li><strong>Optional iOS usage sharing</strong>: Turn Share app usage off in Privacy &amp; My Data to stop collection and request deletion. Wait for acknowledgement if a retry is pending. This does not change your subscription or existing operational services.</li>
+    <li><strong>Skye AI on iOS 1.2.14 and later</strong>: Withdraw AI permission in Privacy &amp; My Data to stop new cloud Skye requests. This also clears profile-sharing permission and does not change your subscription.</li>
+    <li><strong>Driver Profile on iOS 1.2.14 and later</strong>: Keep profile sharing off in Privacy &amp; My Data, or choose Standard in Settings, to omit profile-specific instructions from future Skye briefings. This does not erase already processed provider requests.</li>
     <li><strong>Saved Routes</strong>: You can delete saved routes within the App at any time.</li>
     <li><strong>Advertising privacy</strong> (Free tier on iOS and Android): Where required, you can review or change your choices using <em>Privacy &amp; Advertising Choices</em> in the App's Settings screen. You can also manage advertising and tracking permissions in your iOS privacy settings, or reset or delete your advertising ID through your Android privacy settings.</li>
 </ul>
 
 <h2>Changes to This Policy</h2>
-<p>We may update this policy from time to time. The "Last updated" date at the top will reflect any changes. Continued use of the App after changes constitutes acceptance.</p>
+<p>We may update this policy from time to time. The date at the top will reflect published changes. Optional usage sharing requires the separate choice in the app; reading this policy or continuing to use the app does not turn that sharing on.</p>
 
 <h2>Contact</h2>
 <p>If you have questions about this privacy policy, contact us at:<br>
